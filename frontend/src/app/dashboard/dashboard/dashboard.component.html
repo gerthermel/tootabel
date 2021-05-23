@@ -1,0 +1,199 @@
+
+<ng-template [ngIf]="this.service.mainLoading" [ngIfElse]="loaded">
+    Loading...
+</ng-template>
+<ng-template #loaded>
+  <ng-template [ngIf]="this.service.isLoggedin" [ngIfElse]="isNotAuth">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-2 menu p-0">
+          <app-left-menu></app-left-menu>
+        </div>
+        <div class="col-lg-10 body d-flex">
+          <div class="top">
+            <div class="row">
+              <div class="col d-lg-none align-self-center">
+                <fa-icon [icon]="['fas','bars']" (click)='this.company.openSidebar("mainMenu")'></fa-icon>
+              </div>
+              <div class="col col-lg-10 text-center align-self-center">
+                <h2 >{{ this.company.companyData.title }}</h2>
+              </div>
+              <div class="col col-lg-2 align-self-center">
+                <div class="d-flex  justify-content-end">
+                  <div class="flex mr-3">
+                    <fa-icon [icon]="['fas', 'user']" ></fa-icon>
+                  </div>
+                  <div class="flex mr-3 d-none d-md-block d-lg-block">
+                    <a>Kasutaja</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="bodyWrap">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mainMenuMobile d-lg-none" [@slideMain]="this.company.slidePanel.mainMenu">  
+      <div class="menuWrap">
+        <div class="top p-3">
+          <div class="row">
+            <div class="col-10 align-self-center">
+              <h2>Firmad</h2>
+            </div>
+            <div class="col-2 align-self-center text-end">
+              <h2>
+                <fa-icon [icon]="['fas','times']" (click)="this.company.closeSidebar()"></fa-icon>
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="middle">
+          <div class="companies d-flex">
+            <ng-template [ngIf]="this.company.myCompaniesLoading" [ngIfElse]="menuContent">
+              <fa-icon [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+            </ng-template>
+            <ng-template #menuContent>
+              <ul>
+                <li *ngFor="let item of this.company.myCompanies; let i=index" routerLink="/firma/{{item.id}}" (click)="this.company.closeSidebar()">{{item.name}}</li>
+              </ul>
+            </ng-template>
+          </div>
+        </div>
+        <div class="bottom p-3">
+          <button class="newCompany align-self-center" (click)='this.company.openSidebar("createCompany")'>
+            <fa-icon [icon]="['far', 'plus-square']" class="mr-2" ></fa-icon>
+            Lisa Firma
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div  [@slideRight]="this.company.slidePanel.newEntry" class="addEntryModal">
+      <div class="wrap p-4">
+        <div class="align-self-center">
+          <h2>Uus Sissekanne</h2>
+          <form>
+            <form  #f="ngForm">
+              <div class="form-group">
+                <small for="name">Kuupäev</small>
+                <div class="row g-3">
+                  <div class="col-3">
+                    <select class="form-control" aria-label="">
+                      <option 
+                      [(ngModel)]="day"
+                      ngDefaultControl
+                      #name="ngModel" 
+                      name="day"
+                      *ngFor="let item of this.table.daysArray; let i=index" [attr.selected]="item == this.table.selectedDay && this.table.selectedMonth == this.table.currentMonth && this.table.selectedYear == this.table.currentYear?true:null">{{item}}</option>
+                    </select>
+                  </div>
+                  <div class="col-5">
+                    <select class="form-control" (change)="this.table.monthChange($event.target.value)">
+                      <option 
+                      [(ngModel)]="month"
+                      ngDefaultControl
+                      #name="ngModel" 
+                      name="month"
+                      *ngFor="let item of this.table.months | keyvalue:returnZero"  value="{{item.key}}" [attr.selected]="item.key == this.table.selectedMonth?true:null">{{item.value}}
+                    </option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <select class="form-control" aria-label="Default select example">
+                      <option 
+                      [(ngModel)]="year"
+                      ngDefaultControl
+                      #name="ngModel" 
+                      name="year"
+                      *ngFor="let item of this.table.years"  value="{{item}}" [attr.selected]="item == this.table.selectedYear?true:null">{{item}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <small for="name">Töömaa</small>
+                <input         
+                  ngModel
+                  #name="ngModel" 
+                  name="tyymaa"
+                  type="text" 
+                  class="form-control"  
+                  placeholder="" 
+                  ngbAutofocus 
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <small for="name">Ülesanded/Märkused</small>
+                <textarea         
+                  ngModel
+                  #name="ngModel" 
+                  name="tasks"
+                  type="text" 
+                  class="form-control"  
+                  placeholder="" 
+                  ngbAutofocus 
+                  required
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <small for="name">Tunnid</small>
+                <input         
+                  ngModel
+                  #name="ngModel" 
+                  name="hours"
+                  type="text" 
+                  class="form-control"  
+                  placeholder="" 
+                  ngbAutofocus 
+                  required
+                >
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" (click)="this.table.createNewEntry(f)" >Lisa Tunnid</button><br>
+            </form>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div [@slideLeft]="this.company.slidePanel.createCompany" class="addCopmanyModal">
+      <div class="wrap p-4">
+        <div class="align-self-center">
+          <h2>Firma Lisamine</h2>
+          <form>
+            <form  #f="ngForm">
+              <div class="form-group">
+                <small for="name">Firma Nimi</small>
+                <input         
+                  ngModel
+                  #name="ngModel" 
+                  name="name"
+                  type="text" 
+                  class="form-control"  
+                  placeholder="" 
+                  ngbAutofocus 
+                  required
+                >
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" (click)="this.company.createCompany(f)" >Lisa</button><br>
+            </form>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="backDrop" [@backDrop]="this.company.backDrop" (click)="this.company.closeSidebar()"></div>
+
+  </ng-template>
+  <ng-template #isNotAuth>
+      <app-login></app-login>
+  </ng-template>
+</ng-template>
+
+

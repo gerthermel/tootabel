@@ -1,0 +1,10 @@
+<div class="companies d-flex">
+  <ng-template [ngIf]="this.company.myCompaniesLoading" [ngIfElse]="menuContent">
+    <fa-icon [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+  </ng-template>
+  <ng-template #menuContent>
+    <ul>
+      <li *ngFor="let item of this.company.myCompanies; let i=index" routerLink="/firma/{{item.id}}">{{item.name}}</li>
+    </ul>
+  </ng-template>
+</div>

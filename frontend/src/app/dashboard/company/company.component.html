@@ -1,0 +1,101 @@
+<div class="top">
+  <div class="input-group mr-3">
+    <label class="input-group-text" for="inputGroupSelect01">
+      <fa-icon [icon]="['fas', 'map-marked-alt']" ></fa-icon>
+    </label>
+    <select class="form-select" id="inputGroupSelect01">
+      <option selected>Töömaa</option>
+    </select>
+    <div class="shadow-bottom"></div>
+  </div>
+
+  <div class="input-group">
+    <label class="input-group-text" for="">
+      <fa-icon [icon]="['fas', 'calendar-alt']" ></fa-icon>
+    </label>
+    <select class="form-select first" id="" (change)="this.filterMonthChange($event.target.value)">
+      <option 
+        name="filterMonth"
+        *ngFor="let item of this.table.months | keyvalue:returnZero"  value="{{convertMonth(item.key)}}" [attr.selected]="item.key == this.table.filterSelectedMonth?true:null">{{item.value}}
+      </option>
+    </select>
+    <select class="form-select" id="" (change)="this.filterYearChange($event.target.value)">
+      <option 
+        name="filterMonth"
+        *ngFor="let item of this.table.years | keyvalue:returnZero"  value="{{item.value}}" [attr.selected]="item.value == this.table.filterSelectedYear?true:null">{{item.value}}
+      </option>
+    </select>
+  </div>
+
+  <div class="btn btn-success addHours" (click)='this.company.openSidebar("newEntry")'>
+    <fa-icon [icon]="['fas', 'user-clock']" class="mr-2"></fa-icon>
+    Lisa Sissekanne
+  </div>
+</div>
+<div class="middle scroll-1">
+  <ng-template [ngIf]="this.table.isLoading" [ngIfElse]="doneLoading">
+    Loading... 
+  </ng-template>
+  <ng-template #doneLoading>
+    <table class="table table-bordered">
+      <tr>
+        <th scope="col text-center" style="width:50px">Päev</th>
+        <th scope="col text-center" style="width:100px">Töömaa</th>
+        <th scope="col text-center">Ülesanded/Märkused</th>
+        <th scope="col text-center" style="width:50px">Tunnid</th>
+        <th scope="col text-center" style="width:50px"></th>
+      </tr>
+      <ng-container *ngFor="let item of this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ] | keyvalue : returnZero">
+        <tr *ngIf="objectKeys( item.value ).length < 2; else multi" [attr.id]=" item.key == this.table.currentDay ? 'today' : null">
+          <td class="days text-center align-middle" >
+            {{item.key}}
+          </td>
+          <td class="object" >{{ objectKeys(item.value)[0] }}</td>
+          <td class="notes"></td>
+          <td class="hours text-center"></td>
+          <td class="options"></td>
+        </tr>
+        <ng-template #multi>
+
+          <tr [attr.id]=" item.key == this.table.currentDay ? 'today' : null">
+            <td class="days text-center align-middle" [attr.rowspan]="objectKeys(item.value).length">{{item.key}}</td>
+            <td class="object" >{{ objectKeys(item.value)[0] }}</td>
+            <td class="notes">{{  this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][ objectKeys(item.value)[0] ]['task'] }}</td>
+            <td class="hours text-center">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  objectKeys(item.value)[0] ]['hours'] }}</td>
+            <td class="options"></td>
+          </tr>
+          <ng-container *ngFor="let tyymaa of item.value | keyvalue : returnZero | slice:1 ">
+            <tr>
+              <td class="object" >{{ tyymaa.key }}</td>
+              <td class="notes">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  tyymaa.key ]['task'] }}</td>
+              <td class="hours text-center">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  tyymaa.key ]['hours'] }}</td>
+              <td class="options">
+                <fa-icon [icon]="['far', 'trash-alt']" ></fa-icon>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-template>
+      </ng-container>
+
+    </table>
+  </ng-template>
+</div>
+<div class="bottom">
+  <div class="row pr-3 pl-3 pt-1 pb-1">
+    <div class="col d-lg-none align-self-center">
+      <button class="btn btn-primary">
+        <fa-icon [icon]="['fas','sort-amount-up']"></fa-icon>
+      </button>
+    </div>
+    <div class="col text-center align-self-center">
+      {{ this.table.totalHours }}<br>
+      <small>Tunde Kokku</small>
+      
+    </div>
+    <div class="col text-right d-lg-none align-self-center">
+      <button class="btn btn-success" (click)='this.company.openSidebar("newEntry")'>
+        <fa-icon [icon]="['far','calendar-check']" ></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>

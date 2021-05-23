@@ -1,1 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
+$menu-color:#bfbfbf;
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+body{
+    overflow:hidden;
+  }
+
+
+  @media ( min-width : 991px) {//only for pc
+
+  }
+  @media ( max-width : 991px) {//only for handheld
+    .body{
+      height:100vh
+    }
+    .mainMenuMobile{
+      display:initial;
+    }
+    .menu{
+      position: absolute;
+      display:none;
+      .menuWrap{
+        .top{
+          display:none;
+        }
+        padding-top:15px;
+      }
+    }
+    .body .top{
+      h2{
+        font-size:15px;
+        margin:0px;
+      }
+    }
+    .bottom .bodyWrap{
+      .top{
+        display:none;
+      }
+      .bottom{
+        .row{
+          height: 100%;
+        }
+      }
+    }
+    .addCopmanyModal{
+      display:none;
+    }
+  
+    .addEntryModal{
+      max-width: 100%;
+    }
+    .mainMenuMobile{
+      z-index: 3;
+      position: absolute;
+      left:100vw;
+      top:0px;
+      width:100vw;
+      height: 100%;
+      color:$menu-color;
+
+      .menuWrap{
+        position: relative;
+        background-color: rgb(58, 58, 58);
+        display: flex;
+        flex-direction: column;
+        height:100%;
+        .middle{
+          flex: 1 1 auto;
+        }
+        .bottom{
+          flex: 0 1 76px;
+          .newCompany{
+            color: $menu-color;
+            border:solid 2px $menu-color;
+            background-color: transparent;
+            width:100%;
+            text-align:center;
+            border-radius: 25px;
+            font-size:20px;
+            font-weight:400;
+            padding:5px 10px 5px 10px;
+            text-transform: uppercase;
+          
+          }
+        }
+      }
+    }
+  }

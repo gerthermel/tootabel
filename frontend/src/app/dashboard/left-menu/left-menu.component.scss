@@ -1,0 +1,41 @@
+$menu-color:#bfbfbf;
+.menuWrap{
+  z-index: 3;
+  position: relative;
+  background-color: rgb(58, 58, 58);
+  display: flex;
+  flex-direction: column;
+  height:100%;
+  .top{
+    height:88px;
+    .logo{
+      text-align: center;
+      padding:15px;
+    }
+  }
+  .middle{
+    flex: 1 1 auto;
+  }
+  .bottom{
+    flex: 0 1 76px;
+    .newCompany{
+      color: $menu-color;
+      border:solid 2px $menu-color;
+      background-color: transparent;
+      width:100%;
+      text-align:center;
+      border-radius: 25px;
+      font-size:20px;
+      font-weight:400;
+      padding:5px 10px 5px 10px;
+      text-transform: uppercase;
+    
+    }
+  }
+}
+
+app-my-companies{
+  width:100%;
+}
+
+

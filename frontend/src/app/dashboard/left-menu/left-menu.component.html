@@ -1,0 +1,16 @@
+<div class="menuWrap">
+  <div class="top p-3">
+    <h1 class="" routerLink="/">Tunnilehed</h1>
+  </div>
+  <div class="middle">
+    <app-my-companies></app-my-companies>
+  </div>
+  <div class="bottom p-3">
+    <button class="newCompany align-self-center" (click)='this.company.openSidebar("createCompany")'>
+      <fa-icon [icon]="['far', 'plus-square']" class="mr-2" ></fa-icon>
+      Lisa Firma
+    </button>
+  </div>
+</div>
+
+

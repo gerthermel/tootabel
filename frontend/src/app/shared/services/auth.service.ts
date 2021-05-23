@@ -21,11 +21,11 @@ export class AuthService{
 	}
 
 	checkAuth(){
-		return this.http.get(environment.apiUrl+'/server/page/auth/isAuth', {withCredentials: true})
+		return this.http.get(environment.apiUrl+'/tootable/auth/isAuth', {withCredentials: true})
 	}
 
 	getAuth(){
-		return this.http.get(environment.apiUrl+'/server/page/auth', {withCredentials: true});
+		return this.http.get(environment.apiUrl+'/tootable/auth', {withCredentials: true});
 	}
 
 	isAuth(){
@@ -33,11 +33,11 @@ export class AuthService{
 	}
 
 	signIn(alias:string, password:string){
-		return this.http.post(environment.apiUrl+'/server/page/sign-in', {alias: alias, password: password}, {withCredentials: true});
+		return this.http.post(environment.apiUrl+'/tootable/auth', {alias: alias, password: password}, {withCredentials: true});
 	}
 
 	signInQuick(alias:string, password:string){
-		this.http.post(environment.apiUrl+'/server/page/sign-in', {alias: alias, password: password}, {withCredentials: true}).subscribe(
+		this.http.post(environment.apiUrl+'/backend/page/sign-in', {alias: alias, password: password}, {withCredentials: true}).subscribe(
 			(data)=>{
 				this.isAuthenticated = true;
 				this.userData = data;
@@ -52,7 +52,7 @@ export class AuthService{
 	}
 
 	signOut(){
-		this.http.get(environment.apiUrl+'/server/page/sign-out', {withCredentials: true}).subscribe(
+		this.http.get(environment.apiUrl+'/tootable/sign-out', {withCredentials: true}).subscribe(
 			(data)=>{
 				this.isAuthenticated = false;
 				this.userData = {};

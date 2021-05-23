@@ -1,0 +1,9 @@
+{
+    "jwtPrivateKey": "",
+    "sessPass": "cascada",
+    "db_host": "localhost",
+    "db_user": "root",
+    "db_password": "",
+    "db_database": "tootabel",
+    "timezone": "utc"
+}

@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class AppService {
   public mainLoading = false;
-  public myRooms = [];
+  public isLoggedin = false;
+  public title;
+  public selectedCompany;
   constructor() { }
 }
