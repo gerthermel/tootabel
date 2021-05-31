@@ -7,7 +7,6 @@ const app = express();
 var http = require('http').Server(app);
 const router = express.Router();
 const path = require('path');
-const url = require('url');
 //var MySQLStore = require('express-mysql-session')(session);
 const MongoStore = require('connect-mongo');
 const io = require('socket.io')(http);
@@ -19,7 +18,10 @@ const fs = require('fs');
 const process = require('process');
 const cookieParser = require('cookie-parser')
 const RedisStore = require('connect-redis')(session);
-const db = require('./modules/mongodb');
+var db = require('./modules/mongodb');
+const mongoose = require('mongoose');
+
+
 
 
 
@@ -121,9 +123,15 @@ app.use(
 )
 
 */
+
 app.use(session({
     secret: 'foo',
-    store: MongoStore.create(options)
+    store: MongoStore.create(
+      {
+        mongoUrl:`mongodb://localhost:27017/tootabel`,
+        ttl: 14 * 24 * 60 * 60,
+      }
+    )
   }));
 const cors = require('cors');
 app.use(cors({
@@ -138,15 +146,25 @@ app.use(cors({
     credentials: true
     })
 );
+
+const mongoUrl = 'mongodb://localhost/tootabel';
+const dbName = 'tootabel';
+mongoose.connect(mongoUrl,{useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.Promise = global.Promise;
 app.use(sess)
 app.use('/tootable/auth', require('./routes/auth'));
 app.use('/tootable/create-account', require('./routes/create-account'));
 app.use('/tootable/company', require('./routes/company'));
 app.use('/tootable/table', require('./routes/table'));
+
 const port = process.env.port || 8080; //8080
 http.listen(port, function(){
     console.log('listening on *:'+port);
 });
+
+
+
+  
 // [END server]
 
 

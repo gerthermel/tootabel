@@ -78,7 +78,6 @@
       <div class="wrap p-4">
         <div class="align-self-center">
           <h2>Uus Sissekanne</h2>
-          <form>
             <form  #f="ngForm">
               <div class="form-group">
                 <small for="name">Kuupäev</small>
@@ -157,7 +156,6 @@
               </div>
               <button type="submit" class="btn btn-primary btn-block" (click)="this.table.createNewEntry(f)" >Lisa Tunnid</button><br>
             </form>
-          </form>
         </div>
       </div>
     </div>
@@ -167,7 +165,7 @@
         <div class="align-self-center">
           <h2>Firma Lisamine</h2>
           <form>
-            <form  #f="ngForm">
+            <form  #companyForm="ngForm">
               <div class="form-group">
                 <small for="name">Firma Nimi</small>
                 <input         
@@ -181,7 +179,7 @@
                   required
                 >
               </div>
-              <button type="submit" class="btn btn-primary btn-block" (click)="this.company.createCompany(f)" >Lisa</button><br>
+              <button type="submit" class="btn btn-primary btn-block" (click)="this.company.createCompany(companyForm)" >Lisa</button><br>
             </form>
           </form>
         </div>

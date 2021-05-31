@@ -4,6 +4,9 @@ const router = express.Router();
 const db = require('../modules/mongodb');
 const url = require('url');
 const sess = require('../middleware/session');
+const md5 = require('md5');
+const mongoose = require('mongoose');
+const Users = require('../models/users')
 
 router.use(express.urlencoded({extended:true}));
 router.use(express.json());
@@ -37,21 +40,11 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const alias = req.body.alias;
-    const password = req.body.password;
-    
-    var sql = `SELECT
-       *
-    FROM users 
-    WHERE username = '${alias}' AND password = md5('${password}')`;
-    try {
-        var result = await db.query(sql)
-    } catch(err) {
-        //logger.log({level:'warn', sql:sql, label: `SQL in ${__filename} (${__line})`,message: err});
-        res.status(500).send({message: `Something went wrong. Please try again in few minutes!`});
-        return;
-    }
-    if (result.length > 0) {
+    const username = req.body.alias;
+    const password = md5(req.body.password);
+
+    await Users.find( { username: `${username}`, password:`${password}` }, function (err, result) {
+      if (result.length > 0) {
         sess.login(result[0].id);
         sess.set('userAlias', result[0].username);
         sess.set('userId', result[0].id.toString());
@@ -61,9 +54,10 @@ router.post('/', async (req, res) => {
             'userAlias': result[0]['username'],
             'userId': result[0]['id'],
         })
-    }else{
-        res.status(400).send({message: `Invalid alias or password!`});
-    }
+      }else{
+          res.status(400).send({message: `Invalid alias or password!`});
+      }
+    });
 })
 
 /*

@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "config": "^3.3.3",
+    "connect-mongo": "^4.4.1",
+    "connect-redis": "^5.1.0",
+    "cookie-parser": "^1.4.5",
+    "dateformat": "^4.5.1",
+    "express": "^4.17.1",
+    "express-mysql-session": "^2.1.6",
+    "express-session": "^1.17.1",
+    "md5": "^2.3.0",
+    "mongodb": "^3.6.8",
+    "mongoose": "^5.12.11",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.7",
+    "socket.io": "^3.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

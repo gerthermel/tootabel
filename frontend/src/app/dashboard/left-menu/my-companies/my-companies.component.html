@@ -4,7 +4,7 @@
   </ng-template>
   <ng-template #menuContent>
     <ul>
-      <li *ngFor="let item of this.company.myCompanies; let i=index" routerLink="/firma/{{item.id}}">{{item.name}}</li>
+      <li *ngFor="let item of this.company.myCompanies; let i=index" routerLink="/firma/{{item._id}}">{{item.name}}</li>
     </ul>
   </ng-template>
 </div>

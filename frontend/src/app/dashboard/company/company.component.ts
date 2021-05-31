@@ -38,10 +38,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
         this.table.generateYears();
         this.table.generateDays();
         this.company.companyData.title = data['name'];
-        setTimeout(() => {
-          let el = document.getElementById('today');
-          el.scrollIntoView({block: "center"});
-        })
+
 
       })
     })
