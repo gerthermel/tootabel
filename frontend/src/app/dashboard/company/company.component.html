@@ -62,9 +62,7 @@
             <td class="object" >{{ objectKeys(item.value)[0] }}</td>
             <td class="notes">{{  this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][ objectKeys(item.value)[0] ]['task'] }}</td>
             <td class="hours text-center">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  objectKeys(item.value)[0] ]['hours'] }}</td>
-            <td class="options">
-              <fa-icon [icon]="['far', 'trash-alt']" ></fa-icon>
-            </td>
+            <td class="options"></td>
           </tr>
           <ng-container *ngFor="let tyymaa of item.value | keyvalue : returnZero | slice:1 ">
             <tr>

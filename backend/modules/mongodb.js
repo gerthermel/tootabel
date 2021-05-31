@@ -1,29 +1,23 @@
-var MongoClient = require('mongodb').MongoClient
+const mysql = require('mysql');
+const util = require('util');
+const config = require('config');
+const process = require('process');
+const {MongoClient} = require('mongodb');
 
-var state = {
-  db: null,
+async function main(){
+    var connectionString = "mongodb://localhost:27017/tootabel";
+    const uri = `${connectionString}`;
+    const client = new MongoClient(uri, {useUnifiedTopology: true});
+    try{
+        await client.connect();
+    }catch(e){
+        console.error(e);
+    } finally{
+        console.log('asd')
+        await client.close();
+    }
 }
+const db = main();
 
-exports.connect = function(url, done) {
-  if (state.db) return done()
 
-  MongoClient.connect(url, function(err, db) {
-    if (err) return done(err)
-    state.db = db
-    done()
-  })
-}
-
-exports.get = function() {
-  return state.db
-}
-
-exports.close = function(done) {
-  if (state.db) {
-    state.db.close(function(err, result) {
-      state.db = null
-      state.mode = null
-      done(err)
-    })
-  }
-}
+module.exports = db;

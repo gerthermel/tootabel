@@ -1,10 +1,35 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../modules/db');
 const md5 = require('md5');
-const Users = require('../models/users')
 
 router.use(express.urlencoded({extended:true}));
 router.use(express.json());
+/*
+router.get('/', async (req, res) => {
+    var isAuth = false
+    var alertsJs = await alerts.display();
+    var css =`
+    <link rel="stylesheet" href="/css/create_account.css">
+    `;
+    var topJs =  `
+    ${alertsJs}
+    <script type="text/javascript" src="/js/create_user_validation.js"></script>`
+    res.render('create-account', 
+        {
+            pageRoot: '../',
+            headerTitle:'Nolife.gg',
+            isAuth: isAuth,
+            layout: 'empty',
+            headerTitle: 'Create Account',
+            extraJstop: topJs,
+            extraCss: css,
+            pageName: 'create-account',
+        }
+    );
+    
+})
+*/
 
 function validateAlias( alias ){
     var alias = alias.trim();
@@ -25,31 +50,28 @@ function validateAlias( alias ){
 
 }
 
-router.post('/usernameTakenCheck', async (req, res)=>{
-  var username = req.body.username;
-  await Users.find( { username: `${username}` }, function (err, docs) {
-    if( docs.length > 0 ){
-      res.status(200).send(true);
-    }else{
-      res.status(200).send(false);
-    }
-  });
-
+router.post('/usernameTakenCheck', (reg, res)=>{
+    res.status(200).send(false)
 });
 
-router.post('/emailTakenCheck', (req, res)=>{
+router.post('/emailTakenCheck', (reg, res)=>{
     res.status(200).send(false)
 });
 
 router.post('/', async (req, res) => {
   var data = req.body.form;
-  var password = md5(data['password']);
-  data['password'] = password;
-  Users.create(data).then( function(user){
-    res.status(200).send(user);
-  })
-  
-  return;
+  var sql = `INSERT INTO users
+  ( username, password) 
+  VALUE 
+  ('${data.username}', '${md5(data.password)}')`;
+  try{
+    var result = await db.query(sql)
+    res.status(200).send(result);
+  } catch(err){
+    res.status(500).send({message: `Database Query Error`});
+    console.log(err)
+    return;
+  }
 })
 
 module.exports = router;

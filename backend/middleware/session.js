@@ -7,6 +7,7 @@ var session = null;
 
 async function check(req, res, next){
     session = req.session;
+    console.log(session)
     if ( !session[sessName] ) {
       createSession(req);
     }else{
@@ -16,6 +17,7 @@ async function check(req, res, next){
 }
 
 async function createSession(req){
+    console.log('asdasdasd')
     var date = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
     const sid = md5(date + Math.floor(1000 + Math.random() * 9000));
     session[sessName] = sid;

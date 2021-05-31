@@ -56,10 +56,6 @@ export class TableService {
         this.isLoading = false;
         this.totalHours = res['hours'];
         this.tyymaad = res['tyymaad'];
-        setTimeout(() => {
-          let el = document.getElementById('today');
-          el.scrollIntoView({block: "center"});
-        })
       },
       (error)=>{
 
