@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertService, alertModalContent } from '../services/alert.service';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyResolver } from '../guards/company-resolver.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CompanyResolver } from '../guards/company-resolver.service';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
 
   ],
   providers: [
@@ -29,6 +31,7 @@ import { CompanyResolver } from '../guards/company-resolver.service';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
   ],
 })
 

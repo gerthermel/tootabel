@@ -1,1 +1,43 @@
 $menu-color:#bfbfbf;
+$active-color: #4e4e4e;
+ul{
+  list-style-type: none;
+  padding: 0px;
+  width: 100%;
+  li{
+    padding: 10px 15px 10px 15px;
+    display:flex;
+    position: relative;
+    &:hover{
+      background-color:$active-color;
+      
+    };
+    &.active{
+      background-color:#636363;
+    }
+    .left{
+      width:100%;
+      cursor:pointer;
+    }
+    .right{
+      width:50px;
+      text-align: right;
+      display: none;
+      fa-icon{
+        cursor:pointer;
+        &:hover{
+          color:white;
+        }
+      }
+      .dropdown-toggle::after{
+        display:none;
+      }
+    }
+
+  }
+  li.active .right,
+  li:hover .right
+  {
+    display: initial;
+  }
+}

@@ -45,6 +45,60 @@
         <th scope="col text-center" style="width:50px">Tunnid</th>
         <th scope="col text-center" style="width:50px"></th>
       </tr>
+      <ng-container *ngFor="let item of this.table.hours | keyvalue : returnZero; index as i">
+        <!-- Single Row -->
+        <tr *ngIf="objectKeys( item.value ).length < 2 ; else multi"> 
+          <ng-template [ngIf]="objectKeys( item.value ).length == 1">
+            <td class="let days text-center align-middle" >
+              {{i+1}}
+            </td>
+            <td class="object" >{{ item.value[ objectKeys(item.value)[0] ].object }}</td>
+            <td class="notes">{{ item.value[ objectKeys(item.value)[0] ].notes }}</td>
+            <td class="hours text-center">{{ item.value[ objectKeys(item.value)[0] ].hours }}</td>
+            <td class="options">
+              <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( item.value[ objectKeys(item.value)[0] ].id, item.key  )"></fa-icon>
+            </td>
+          </ng-template>
+          <ng-template [ngIf]="objectKeys( item.value ).length == 0">
+
+            <td class="let days text-center align-middle" >
+              {{i+1}}
+            </td>
+            <td class="object" ></td>
+            <td class="notes"></td>
+            <td class="hours text-center"></td>
+            <td class="options">
+            </td>
+          </ng-template>
+        </tr>
+        <!-- Multi Row -->
+        <ng-template #multi>
+          <tr>
+            <td class="let days text-center align-middle" [attr.rowspan]="objectKeys(item.value).length">
+              {{i+1}}
+            </td>
+            <td class="object" >{{ item.value[ objectKeys(item.value)[0] ].object }}</td>
+            <td class="notes">{{ item.value[ objectKeys(item.value)[0] ].notes }}</td>
+            <td class="hours text-center">{{ item.value[ objectKeys(item.value)[0] ].hours }}</td>
+            <td class="options">
+              <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
+            </td>
+          </tr>
+          <ng-container *ngFor="let row of item.value | keyvalue : returnZero | slice:1 ">
+            <tr>
+              <td class="object" >{{ row.value.object }}</td>
+              <td class="notes">{{ row.value.notes }}</td>
+              <td class="hours text-center">{{ row.value.hours }}</td>
+              <td class="options">
+                <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( row.value.id, item.key )" ></fa-icon>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-template>
+
+        
+      </ng-container>
+      <!--
       <ng-container *ngFor="let item of this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ] | keyvalue : returnZero">
         <tr *ngIf="objectKeys( item.value ).length < 2; else multi" [attr.id]=" item.key == this.table.currentDay ? 'today' : null">
           <td class="days text-center align-middle" >
@@ -53,16 +107,19 @@
           <td class="object" >{{ objectKeys(item.value)[0] }}</td>
           <td class="notes"></td>
           <td class="hours text-center"></td>
-          <td class="options"></td>
+          <td class="options">
+            <fa-icon [icon]="['far', 'trash-alt']" *ngIf="objectKeys( item.value ).length > 0" (click)="this.table.deleteEntry( item.value[  objectKeys( item.value )[0] ]['id'] )"></fa-icon>
+          </td>
         </tr>
         <ng-template #multi>
-
           <tr [attr.id]=" item.key == this.table.currentDay ? 'today' : null">
             <td class="days text-center align-middle" [attr.rowspan]="objectKeys(item.value).length">{{item.key}}</td>
             <td class="object" >{{ objectKeys(item.value)[0] }}</td>
             <td class="notes">{{  this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][ objectKeys(item.value)[0] ]['task'] }}</td>
             <td class="hours text-center">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  objectKeys(item.value)[0] ]['hours'] }}</td>
-            <td class="options"></td>
+            <td class="options">
+              <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( objectKeys(item.value)[0][id]  )"></fa-icon>
+            </td>
           </tr>
           <ng-container *ngFor="let tyymaa of item.value | keyvalue : returnZero | slice:1 ">
             <tr>
@@ -70,32 +127,51 @@
               <td class="notes">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  tyymaa.key ]['task'] }}</td>
               <td class="hours text-center">{{ this.table.hours[ this.table.filterSelectedYear ][ this.table.filterSelectedMonth ][item.key][  tyymaa.key ]['hours'] }}</td>
               <td class="options">
-                <fa-icon [icon]="['far', 'trash-alt']" ></fa-icon>
+                <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( item.value[tyymaa.key].id )"></fa-icon>
               </td>
             </tr>
           </ng-container>
         </ng-template>
       </ng-container>
-
+      -->
     </table>
   </ng-template>
 </div>
+
 <div class="bottom">
-  <div class="row pr-3 pl-3 pt-1 pb-1">
-    <div class="col d-lg-none align-self-center">
-      <button class="btn btn-primary">
-        <fa-icon [icon]="['fas','sort-amount-up']"></fa-icon>
+  <div class="wrap">
+    <div class="left d-lg-none align-self-center">
+      <button class="btn btn-primary" (click)='this.company.openSidebar("newFilter")'>
+        <fa-icon [icon]="['fas','chevron-up']"></fa-icon>
       </button>
     </div>
-    <div class="col text-center align-self-center">
-      {{ this.table.totalHours }}<br>
-      <small>Tunde Kokku</small>
-      
+    <div class="middle text-center align-self-center">
+      <div class="d-none d-lg-block">
+        {{ this.table.totalHours }}<br>
+        <small>Tunde Kokku</small>
+      </div>
+      <div class="d-lg-none">
+        <div class="btn-group w-100">
+          <button type="button" class="btn"><fa-icon [icon]="['fas', 'chevron-left']" (click)="this.table.prevMonth()"></fa-icon></button>
+          <div class="btn-group month w-100" ngbDropdown role="group" container="body">
+            <button class="btn" ngbDropdownToggle>{{ this.table.months[this.table.filterSelectedMonth] }}</button>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <button ngbDropdownItem (click)="this.filterMonthChange($event.target.value)"
+                  name="filterMonth"
+                  *ngFor="let item of this.table.months | keyvalue:returnZero"  value="{{convertMonth(item.key)}}" [attr.id]="item.key == this.table.filterSelectedMonth?'currentMonth':null">{{item.value}}
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn"><fa-icon [icon]="['fas', 'chevron-right']" (click)="this.table.nextMonth()"></fa-icon></button>
+        </div>
+      </div>
     </div>
-    <div class="col text-right d-lg-none align-self-center">
+    <div class="right text-right d-lg-none align-self-center">
       <button class="btn btn-success" (click)='this.company.openSidebar("newEntry")'>
         <fa-icon [icon]="['far','calendar-check']" ></fa-icon>
       </button>
     </div>
+  </div>
+  <div class="row d-none pr-3 pl-3 pt-1 pb-1 text-center align-self-center">
   </div>
 </div>

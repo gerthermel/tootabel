@@ -11,15 +11,19 @@ export class CompanyService {
   myCompaniesLoading = true;
   companyLoading = true;
   companyData = {
+    id:'',
     title: '',
   }
+
   public slidePanel = {//true == open, false == close
     createCompany:'hide',
     newEntry:'hide',
     mainMenu:'hide',
+    newFilter:'hide',
+    newCompanyModal:'hide',
   }
   public backDrop:string = 'out';
-  private activePanel;
+  private activePanel = [];
   private openMenus = {
 		createCompany: false, //bottom teams menu
     newEntry:false,
@@ -34,26 +38,36 @@ export class CompanyService {
 		this.backDrop = state;
 	}
 
-  openSidebar(panel){
-		if(panel != this.activePanel){
-			this.slidePanel[this.activePanel] = 'hide';
+  openSidebar(panel, ignore?:boolean){
+		if(panel != this.activePanel && !ignore){
+			//this.slidePanel[this.activePanel] = 'hide';
+      this.slidePanel[ this.activePanel[this.activePanel.length-1] ] = 'hide';
 		}
 
 		if( this.slidePanel[panel] == 'show'){
 			this.setBackdrop('hide')
 			this.slidePanel[panel] = 'hide'
-			this.activePanel = panel; 
+			//this.activePanel = panel; 
+      this.activePanel.push(panel)
 		}else{
 			this.setBackdrop('show')
 			this.slidePanel[panel] = 'show';
-			this.activePanel = panel; 
+			//this.activePanel = panel; 
+      this.activePanel.push(panel)
 		}
 
 	}
 
-  closeSidebar(){
-		this.setBackdrop('hide')
-		this.slidePanel[this.activePanel] = 'hide';
+  closeSidebar(name?:string){
+    this.setBackdrop('hide')
+    if( name ){
+      //console.log(name)
+    }else{
+      console.log(this.activePanel)
+      this.slidePanel[ this.activePanel[this.activePanel.length-1] ] = 'hide';
+      this.activePanel.splice(-1)
+      //console.log(this.activePanel)
+    }
 	}
 
   getMyCompanies(){
@@ -76,13 +90,25 @@ export class CompanyService {
     var name = companyForm.value['name'];
     this.http.post(environment.apiUrl+'/tootable/company/create',{form:  companyForm.value}, {withCredentials: true}).subscribe(
       (res)=>{
-		this.myCompanies.push(res['returnData'])
-		this.closeSidebar();
+      this.myCompanies.push(res['returnData'])
+      this.closeSidebar();
       },
 	  (error)=>{
 		this.alert.error(error.error.message)
 	  }
 
+    )
+  }
+
+  removeCompany(id:number){
+    var companyId = this.myCompanies[id].id;
+    this.myCompanies.splice(id, 1);
+    this.http.delete(environment.apiUrl+'/tootable/company/'+companyId, {withCredentials: true}).subscribe(
+      (res)=>{
+      },
+	  (error)=>{
+		  this.alert.error(error.error.message)
+	    }
     )
   }
 

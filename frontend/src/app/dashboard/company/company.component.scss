@@ -1,7 +1,7 @@
 :host{
   display: flex;
   flex-direction: column;
-  height: 100%;
+  max-height: -webkit-fill-available;
   overflow:hidden;
 }
 
@@ -131,6 +131,20 @@
   height:77px;
   position: relative;
   border-top: 1px solid #bfbfbf;
+  width: 100%;
+  /* align-self: center; */
+  align-self: center;
+  display: flex;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  .wrap{
+    width: 100%;
+    display: flex;
+  }
+  .row{
+    flex-direction: column;
+  }
   .shadow{
     border:solid thin red;
     height:0px;
@@ -138,6 +152,27 @@
     position:absolute;
     top:-1px;
   }
+
+  .middle{
+    padding:0px;
+    margin:0px;
+    height:initial;
+    flex-grow: 100;
+    button{
+      outline: none;
+      box-shadow: none;
+    }
+
+    .month{
+      button::after{
+        display:none;
+      }
+    }
+  }
+}
+
+#currentMonth{
+  font-weight: 800;
 }
 
 

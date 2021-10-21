@@ -4,11 +4,13 @@ import { TableService } from 'src/app/shared/services/table.service';
 import { state, trigger, style, transition, animate } from '@angular/animations';
 import { CompanyService } from 'src/app/shared/services/company.service';
 import { ActivatedRoute } from '@angular/router';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss'],
+  providers: [NgbDropdownConfig]
 })
 @Injectable({
   providedIn: 'root' // just before your class
@@ -23,7 +25,11 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     public company:CompanyService,
     private route: ActivatedRoute,
     public cdr:ChangeDetectorRef,
-  ) { }
+    config: NgbDropdownConfig
+  ) { 
+    config.placement = 'top-left';
+    config.autoClose = true;
+  }
 
 
   
@@ -36,8 +42,10 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         //this.todayRow.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
         this.table.generateYears();
+        this.table.generateMonths();
         this.table.generateDays();
         this.company.companyData.title = data['name'];
+        this.company.companyData.id = data['id'];
         setTimeout(() => {
           let el = document.getElementById('today');
           el.scrollIntoView({block: "center"});
@@ -56,11 +64,13 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     return parseInt(number);
   }
   public filterMonthChange(month){
+    console.log('month')
     this.table.filterSelectedMonth = month;
     this.table.getData();
   }
 
   public filterYearChange(year){
+    console.log('year')
     this.table.filterSelectedYear = year;
     this.table.getData();
   }

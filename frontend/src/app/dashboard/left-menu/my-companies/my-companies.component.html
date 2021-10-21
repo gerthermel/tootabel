@@ -4,7 +4,20 @@
   </ng-template>
   <ng-template #menuContent>
     <ul>
-      <li *ngFor="let item of this.company.myCompanies; let i=index" routerLink="/firma/{{item.id}}">{{item.name}}</li>
+      <li ngbDropdown [attr.class]=" item.id == this.company.companyData.id ? 'active' : null" *ngFor="let item of this.company.myCompanies; let i=index" >
+        <div class="left" routerLink="/firma/{{item.id}}">
+          {{item.name}}
+        </div>
+        <div class="right">
+          <fa-icon class="text-right" [icon]="['fas', 'ellipsis-v']" ngbDropdownToggle></fa-icon>
+        </div>
+        <div class="dropdown-menu" container="body" placement="top" ngbDropdownMenu>
+          <button (click)="company.removeCompany(i)" ngbDropdownItem>
+            <fa-icon class="text-right" [icon]="['fas', 'trash']" ></fa-icon> Remove
+          </button>
+        </div>
+      </li>
     </ul>
   </ng-template>
 </div>
+

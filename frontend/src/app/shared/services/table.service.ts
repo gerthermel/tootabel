@@ -13,12 +13,14 @@ export class TableService {
   public isLoading = true;
   public now = new Date();
   public daysArray = new Array();
+  
   public currentDay = this.now.getDate();
   public currentDate = this.now.getDate();
   public currentMonth = this.now.getMonth();
   public currentYear = this.now.getFullYear();
   public daysInMonth = this.getDaysInMonth(1, 2012);
   public daysInCurrentMonth = new Array(new Date(this.now.getFullYear(), this.now.getMonth()+1, 0).getDate());
+  public monthArray = new Array() 
   public months:{[key: number]: string} = {
     0:'Jaanuar',
     1:'Veebruar',
@@ -39,7 +41,7 @@ export class TableService {
   @Input() selectedYear = this.currentYear;
   public filterSelectedMonth = this.currentMonth;
   public filterSelectedYear = this.currentYear;
-  public hours = {};
+  public hours:object = {};
   public totalHours = 0;
   public tyymaad;
   constructor(
@@ -47,11 +49,13 @@ export class TableService {
     public http: HttpClient,
     public alert:AlertService,
     public company:CompanyService
-  ) { }
+  ) { 
+  }
   
   getData(){
     this.http.get(environment.apiUrl+`/tootable/table/${this.service.selectedCompany}/hours/${this.filterSelectedMonth}/${this.filterSelectedYear}`, {withCredentials: true}).subscribe(
       (res)=>{
+        console.log(this.hours);
         this.hours = res['data'];
         this.isLoading = false;
         this.totalHours = res['hours'];
@@ -67,6 +71,11 @@ export class TableService {
     return new Date(year, month+1, 0).getDate();
   };
 
+  public getDays() {
+    return new Date(this.selectedYear, this.filterSelectedMonth+1, 0).getDate();
+  };
+
+
   public generateYears(){
     for(let i = this.currentYear-5;i <= this.currentYear; i++){
       this.years.push(i)
@@ -74,9 +83,7 @@ export class TableService {
   }
 
   public generateMonths(){
-    for(let i = 1;i <= 12; i++){
-      //this.hours[this.selectedYear][i] = {};
-    }
+    this.monthArray = [0,1,2,3,4,5,6,7,8,9,10,11]
   }
 
   public generateDays(){
@@ -88,6 +95,10 @@ export class TableService {
     }
   }
 
+  public dayChange(value){
+    this.selectedDay = parseInt(value);
+  }
+  
   public monthChange(value){
     this.selectedDay = 1;
     var key = value;
@@ -106,9 +117,11 @@ export class TableService {
     form['day'] = this.selectedDay;
     this.http.post(environment.apiUrl+'/tootable/table/new-entry',{form:  form}, {withCredentials: true}).subscribe(
       (res)=>{
-        console.log(form);
         var newEntry = { 'task': form['tasks'], 'hours': form['hours'] };
-        this.hours[this.selectedYear][this.selectedMonth][this.selectedDay][[form['tyymaa']]] = newEntry;
+        //console.log(this.hours)
+        let date = `${form['year']}-${form['month']}-${form['day']}`;
+        this.hours[ date ][ res['data']['id'] ] = res['data'];
+        console.log(this.hours);
         this.company.closeSidebar()
       },
 	    (error)=>{
@@ -133,5 +146,29 @@ export class TableService {
 
   getHours(){
     return this.http.get(environment.apiUrl+`/tootable/table/${this.service.selectedCompany}/hours`, {withCredentials: true})
+  }
+
+  prevMonth(){
+    if( this.filterSelectedMonth > 0 ){
+      this.filterSelectedMonth = this.filterSelectedMonth-1
+    }
+  }
+
+  nextMonth(){
+    if( this.filterSelectedMonth < 11 ){
+      this.filterSelectedMonth = this.filterSelectedMonth+1
+    }
+  }
+
+  deleteEntry(id, date){
+    var itemId =  id;
+    this.http.delete(environment.apiUrl+`/tootable/table/entry/${id}`, {withCredentials: true}).subscribe(
+      (res)=>{
+        delete this.hours[date][id];
+      },
+      (error)=>{
+        this.alert.error(error.error.message)
+      }
+    )
   }
 }

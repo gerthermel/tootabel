@@ -5,6 +5,8 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { CompanyService } from 'src/app/shared/services/company.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-my-companies',
@@ -16,8 +18,10 @@ export class MyCompaniesComponent implements OnInit {
 
   constructor(
     public company:CompanyService,
-
-  ) { }
+    public dropdown: NgbDropdownConfig
+  ) {
+    dropdown.placement = 'bottom-right';
+  }
 
   ngOnInit(): void {
     this.company.getMyCompanies();

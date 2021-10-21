@@ -12,18 +12,18 @@
         <div class="col-lg-10 body d-flex">
           <div class="top">
             <div class="row">
-              <div class="col d-lg-none align-self-center">
+              <div class="col-2 d-lg-none text-center align-self-center">
                 <fa-icon [icon]="['fas','bars']" (click)='this.company.openSidebar("mainMenu")'></fa-icon>
               </div>
               <div class="col col-lg-10 text-center align-self-center">
                 <h2 >{{ this.company.companyData.title }}</h2>
               </div>
-              <div class="col col-lg-2 align-self-center">
+              <div class="col-2 col-lg-2 text-center align-self-center">
                 <div class="d-flex  justify-content-end">
-                  <div class="flex mr-3">
+                  <div class="flex mr-lg-3 ">
                     <fa-icon [icon]="['fas', 'user']" ></fa-icon>
                   </div>
-                  <div class="flex mr-3 d-none d-md-block d-lg-block">
+                  <div class="flex lg-mr-3 d-none d-md-block d-lg-block">
                     <a>Kasutaja</a>
                   </div>
                 </div>
@@ -44,7 +44,7 @@
         <div class="top p-3">
           <div class="row">
             <div class="col-10 align-self-center">
-              <h2>Firmad</h2>
+              <h2>Tunnilehed</h2>
             </div>
             <div class="col-2 align-self-center text-end">
               <h2>
@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="bottom p-3">
-          <button class="newCompany align-self-center" (click)='this.company.openSidebar("createCompany")'>
+          <button class="newCompany align-self-center" (click)='this.company.openSidebar("newCompanyModal",true)'>
             <fa-icon [icon]="['far', 'plus-square']" class="mr-2" ></fa-icon>
             Lisa Firma
           </button>
@@ -77,35 +77,44 @@
     <div  [@slideRight]="this.company.slidePanel.newEntry" class="addEntryModal">
       <div class="wrap p-4">
         <div class="align-self-center">
-          <h2>Uus Sissekanne</h2>
+          <div class="row">
+            <div class="col-10 align-self-center">
+              <h4>Uus Sissekanne</h4>
+            </div>
+            <div class="col-2 align-self-center text-end">
+              <h4>
+                <fa-icon [icon]="['fas','times']" (click)="this.company.closeSidebar()"></fa-icon>
+              </h4>
+            </div>
+          </div>
           <form>
-            <form  #f="ngForm">
+            <form  #d="ngForm">
               <div class="form-group">
                 <small for="name">Kuupäev</small>
                 <div class="row g-3">
-                  <div class="col-3">
-                    <select class="form-control" aria-label="">
+                  <div class="col-3 pr-1">
+                    <select class="form-control pl-1 pr-1" name="selectedDay" [ngModel]="selectedDay" (ngModelChange)="this.table.dayChange($event)">
                       <option 
-                      [(ngModel)]="day"
-                      ngDefaultControl
-                      #name="ngModel" 
-                      name="day"
-                      *ngFor="let item of this.table.daysArray; let i=index" [attr.selected]="item == this.table.selectedDay && this.table.selectedMonth == this.table.currentMonth && this.table.selectedYear == this.table.currentYear?true:null">{{item}}</option>
+                        *ngFor="let item of this.table.daysArray; let i=index"  
+                        [attr.selected]="item == this.table.selectedDay && this.table.selectedMonth == this.table.currentMonth && this.table.selectedYear == this.table.currentYear?true:null"
+                      >
+                        {{item}}
+                      </option>
                     </select>
                   </div>
-                  <div class="col-5">
-                    <select class="form-control" (change)="this.table.monthChange($event.target.value)">
+                  <div class="col-5 pl-1 pr-1">
+                    <select class="form-control pl-1 pr-1" name="selectedMonth" [ngModel]="selectedMonth" (ngModelChange)="this.table.monthChange($event)">
                       <option 
-                      [(ngModel)]="month"
-                      ngDefaultControl
-                      #name="ngModel" 
-                      name="month"
-                      *ngFor="let item of this.table.months | keyvalue:returnZero"  value="{{item.key}}" [attr.selected]="item.key == this.table.selectedMonth?true:null">{{item.value}}
-                    </option>
+                        [attr.value]="item"
+                        *ngFor="let item of this.table.monthArray; let i=index"
+                        [attr.selected]="item == this.table.selectedMonth?true:null"
+                      >
+                        {{ this.table.months[ item ] }}
+                      </option>
                     </select>
                   </div>
-                  <div class="col-4">
-                    <select class="form-control" aria-label="Default select example">
+                  <div class="col-4 pl-1">
+                    <select class="form-control pl-1 pr-1" aria-label="Default select example">
                       <option 
                       [(ngModel)]="year"
                       ngDefaultControl
@@ -121,7 +130,7 @@
                 <input         
                   ngModel
                   #name="ngModel" 
-                  name="tyymaa"
+                  name="object"
                   type="text" 
                   class="form-control"  
                   placeholder="" 
@@ -155,9 +164,35 @@
                   required
                 >
               </div>
-              <button type="submit" class="btn btn-primary btn-block" (click)="this.table.createNewEntry(f)" >Lisa Tunnid</button><br>
+              <button type="submit" class="btn btn-primary btn-block" (click)="this.table.createNewEntry(d)" >Lisa Tunnid</button><br>
             </form>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <div  [@slideUp]="this.company.slidePanel.newFilter" class="newFilter d-lg-none">
+      <div class="row">
+        <div class="col-10 align-self-center">
+          <h4>Filtrid</h4>
+        </div>
+        <div class="col-2 align-self-center text-end">
+          <h4>
+            <fa-icon [icon]="['fas','times']" (click)="this.company.closeSidebar()"></fa-icon>
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <div  [@slideCompany]="this.company.slidePanel.newCompanyModal" class="newCompanyModal d-lg-none">
+      <div class="row">
+        <div class="col-10 align-self-center">
+          <h4>Uus Firma</h4>
+        </div>
+        <div class="col-2 align-self-center text-end">
+          <h4>
+            <fa-icon [icon]="['fas','times']" (click)="this.company.closeSidebar()"></fa-icon>
+          </h4>
         </div>
       </div>
     </div>

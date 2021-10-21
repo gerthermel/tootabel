@@ -51,11 +51,33 @@ import { TableService } from 'src/app/shared/services/table.service';
 	]),
 	trigger('slideRight', [
 		state('hide', style({
-				'right': '-400px',
+				'right': '-100vw',
 			})),
 		state('show', 
 			style({
 				'right': '0px',
+			})),
+		transition('show => hide', animate(150)),
+		transition('hide => show', animate(150))
+	]),
+	trigger('slideCompany', [
+		state('hide', style({
+				'right': '-100vw',
+			})),
+		state('show', 
+			style({
+				'right': '0px',
+			})),
+		transition('show => hide', animate(150)),
+		transition('hide => show', animate(150))
+	]),
+	trigger('slideUp', [
+		state('hide', style({
+				'bottom': '-100vh',
+			})),
+		state('show', 
+			style({
+				'bottom': '0px',
 			})),
 		transition('show => hide', animate(150)),
 		transition('hide => show', animate(150))

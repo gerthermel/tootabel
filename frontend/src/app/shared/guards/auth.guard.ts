@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
 		next: ActivatedRouteSnapshot,
     	state: RouterStateSnapshot): Observable<any> | any{
 
-			if (isPlatformBrowser(this.platformId)) {
+			/*if (isPlatformBrowser(this.platformId)) {*/
 				return this.auth.getAuth().pipe(
 					map(
 						(data)=>{
@@ -48,7 +48,7 @@ export class AuthGuard implements CanActivate {
 						}
 					)
 				)
-			}
+			/*}*/
 		}
 }
 

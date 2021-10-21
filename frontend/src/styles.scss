@@ -5,19 +5,40 @@ $menu-color:#bfbfbf;
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 body{
     overflow:hidden;
+    position: relative;
   }
+.left{
 
+}
+.middle{
+
+}
+.right{
+  
+}
 
   @media ( min-width : 991px) {//only for pc
 
   }
   @media ( max-width : 991px) {//only for handheld
+    html{
+      overflow: hidden;
+    }
+    body{
+      position: relative;
+    }
     .body{
       height:100vh
+    }
+    .login-wrap{
+      width: 100% !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
     }
     .mainMenuMobile{
       display:initial;
     }
+
     .menu{
       position: absolute;
       display:none;
@@ -87,4 +108,26 @@ body{
         }
       }
     }
+
+    .newFilter{
+      position:fixed;
+      padding:24px;
+      width:100vw;
+      height:100%;
+      bottom:-120vh;
+      background-color:white;
+      z-index: 3;
+    }
+    .newCompanyModal{
+      top:0px;
+      padding:24px;
+      width:100vw;
+      height:100%;
+      position:absolute;
+      background-color:white;
+      z-index: 3;
+    }
   }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
