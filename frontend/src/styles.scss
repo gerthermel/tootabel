@@ -23,12 +23,14 @@ body{
   @media ( max-width : 991px) {//only for handheld
     html{
       overflow: hidden;
+      height:100%
     }
     body{
       position: relative;
+      height:100%
     }
     .body{
-      height:100vh
+      /*height:100vh*/
     }
     .login-wrap{
       width: 100% !important;

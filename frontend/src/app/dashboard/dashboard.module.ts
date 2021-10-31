@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/modules/shared.module';
 import { MyCompaniesComponent } from './left-menu/my-companies/my-companies.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { CompanyComponent } from './company/company.component';
+import { AutosizeModule } from 'ngx-autosize';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { CompanyComponent } from './company/company.component';
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
+    AutosizeModule,
   ]
 })
 export class DashboardModule { }

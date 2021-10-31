@@ -40,7 +40,6 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     this.route.data.subscribe((response: any) => {
       var data = response.resolver[0];
       setTimeout(() => {
-        //this.todayRow.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
         this.table.generateYears();
         this.table.generateMonths();
         this.table.generateDays();
@@ -64,13 +63,12 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     return parseInt(number);
   }
   public filterMonthChange(month){
-    console.log('month')
+    this.table.isTableLoading = true;
     this.table.filterSelectedMonth = month;
     this.table.getData();
   }
 
   public filterYearChange(year){
-    console.log('year')
     this.table.filterSelectedYear = year;
     this.table.getData();
   }

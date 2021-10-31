@@ -1,10 +1,13 @@
 :host{
   display: flex;
   flex-direction: column;
-  max-height: -webkit-fill-available;
   overflow:hidden;
+  width: 100%;
+  height: calc(100vh - 77px);
 }
-
+.top,.middle,.bottom{
+  width: 100%;
+}
 .top{
   //flex: 0 1 76px;
   height:68px;
@@ -76,8 +79,12 @@
     border-collapse: separate;
     border-spacing: 0px;
     border:none;
+
     &.table-bordered{
       border:none;
+    }
+    tr#today{
+      font-weight:bold;
     }
     th{
       position: sticky;
@@ -90,6 +97,17 @@
     td{
       border-bottom:  none;
       border-right:  none;
+      input,textarea{
+        border:none;
+        vertical-align: sub;
+        outline:none;
+        height:100%;
+      }
+      textarea{
+        vertical-align: sub;
+        resize: none;
+        width:100%;
+      }
     }
     tr:nth-child(2) {
       td{
@@ -101,29 +119,6 @@
       border-left:  1px solid #dee2e6;
     }
   }
-}
-.scroll-1::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-
-.scroll-1::-webkit-scrollbar-track {
-  background: #ddd;
-  margin-top: 0px;
-  background: transparent;
-}
-
-.scroll-1::-webkit-scrollbar-thumb {
-  background: #adadad;
-}
-
-.scroll-1::-webkit-scrollbar-track-piece:end {
-  background: transparent;
-  margin-bottom: 15px; 
-}
-
-.scroll-1::-webkit-scrollbar-track-piece:start {
-  background: transparent;
 }
 
 .bottom{
@@ -137,6 +132,7 @@
   display: flex;
   padding-right: 15px;
   padding-left: 15px;
+  flex:1;
 
   .wrap{
     width: 100%;
@@ -175,4 +171,55 @@
   font-weight: 800;
 }
 
+.scroll-1::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scroll-1::-webkit-scrollbar-track {
+  background: #ddd;
+  margin-top: 0px;
+  background: transparent;
+}
+
+.scroll-1::-webkit-scrollbar-thumb {
+  background: #adadad;
+}
+
+.scroll-1::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 15px; 
+}
+
+.scroll-1::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+}
+#loadingTables{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-color:white;
+  opacity: 0.8;
+  text-align:center;
+  fa-icon{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+@media ( max-width : 991px) {//only for handheld
+  :host{
+    height:initial;
+  }
+  .middle{
+    table{
+      margin-left:0px;
+    }
+  }
+  .bottom{
+    flex:none;
+    height:55px;
+  }
+}
 

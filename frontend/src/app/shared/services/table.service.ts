@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Input } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { AlertService } from './alert.service';
 import { AppService } from './app.service';
@@ -13,12 +13,13 @@ export class TableService {
   public isLoading = true;
   public now = new Date();
   public daysArray = new Array();
+  public isTableLoading = false;
   
   public currentDay = this.now.getDate();
-  public currentDate = this.now.getDate();
   public currentMonth = this.now.getMonth();
   public currentYear = this.now.getFullYear();
   public daysInMonth = this.getDaysInMonth(1, 2012);
+  public currentDate = `${this.currentYear}-${this.currentMonth+1}-${this.currentDay}`
   public daysInCurrentMonth = new Array(new Date(this.now.getFullYear(), this.now.getMonth()+1, 0).getDate());
   public monthArray = new Array() 
   public months:{[key: number]: string} = {
@@ -44,6 +45,7 @@ export class TableService {
   public hours:object = {};
   public totalHours = 0;
   public tyymaad;
+  public updateBuffer;
   constructor(
     public service:AppService,
     public http: HttpClient,
@@ -55,9 +57,8 @@ export class TableService {
   getData(){
     this.http.get(environment.apiUrl+`/tootable/table/${this.service.selectedCompany}/hours/${this.filterSelectedMonth}/${this.filterSelectedYear}`, {withCredentials: true}).subscribe(
       (res)=>{
-        console.log(this.hours);
         this.hours = res['data'];
-        this.isLoading = false;
+        this.isTableLoading = false;
         this.totalHours = res['hours'];
         this.tyymaad = res['tyymaad'];
       },
@@ -149,15 +150,40 @@ export class TableService {
   }
 
   prevMonth(){
+    this.isTableLoading = true;
     if( this.filterSelectedMonth > 0 ){
       this.filterSelectedMonth = this.filterSelectedMonth-1
+      this.getData();
     }
   }
 
   nextMonth(){
+    this.isTableLoading = true;
     if( this.filterSelectedMonth < 11 ){
       this.filterSelectedMonth = this.filterSelectedMonth+1
+      this.getData();
     }
+  }
+
+  edit(event){
+    clearTimeout(this.updateBuffer);
+    this.updateBuffer = setTimeout(()=>{
+      console.log('saved')
+      var value = event.target.value;
+      var itemId = event.target.getAttribute('itemId');
+      var propertyName = event.target.getAttribute('property')
+      var formData: FormData = new FormData();
+      formData.append('id', itemId);
+      formData.append('property', propertyName);
+      formData.append('value', value);
+      console.log(formData);
+      this.http.put(environment.apiUrl+'/tootable/table/edit-entry', formData, {withCredentials: true}).subscribe(
+        
+      )
+    }, 800);
+
+
+
   }
 
   deleteEntry(id, date){

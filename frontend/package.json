@@ -42,6 +42,7 @@
     "md5": "^2.3.0",
     "mydatepicker": "^2.6.11",
     "ng-pick-datetime": "^7.0.0",
+    "ngx-autosize": "^1.8.4",
     "npm": "^7.11.1",
     "rxjs": "~6.5.4",
     "testproxy": "^1.3.3",
