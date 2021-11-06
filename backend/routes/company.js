@@ -118,6 +118,48 @@ try{
   }
 })
 
+router.delete('/:id', async (req, res) => {
+  var id = req.params.id
+
+  var sql = `
+    DELETE FROM company WHERE id = ${id}
+    `;
+  try{
+    db.query(sql);
+  } catch(err){
+    res.status(400).send({message: `Delete Company Error Code: 1`})
+    throw new Error(err)
+  }
+  var sql = `
+    DELETE FROM company_permissions WHERE company_id = ${id}
+  `;
+  try{
+    db.query(sql);
+  } catch(err){
+    res.status(400).send({message: `Delete Company Error Code: 2`})
+    throw new Error(err)
+  }
+  var sql = `
+    DELETE FROM company_workers WHERE company_id = ${id}
+    `;
+  try{
+    db.query(sql);
+  } catch(err){
+    res.status(400).send({message: `Delete Company Error Code: 3`})
+    throw new Error(err)
+  }
+  var sql = `
+    DELETE FROM hours WHERE company_id = ${id}
+    `;
+  try{
+    db.query(sql);
+  } catch(err){
+    res.status(400).send({message: `Delete Company Error Code: 4`})
+    throw new Error(err)
+  }
+
+})
+
 
 module.exports = router;
 

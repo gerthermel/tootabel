@@ -1,7 +1,7 @@
 const config = require('config');
 const express = require('express');
 const router = express.Router();
-const db = require('../modules/mongodb');
+const db = require('../modules/db');
 const url = require('url');
 const sess = require('../middleware/session');
 
@@ -48,7 +48,8 @@ router.post('/', async (req, res) => {
         var result = await db.query(sql)
     } catch(err) {
         //logger.log({level:'warn', sql:sql, label: `SQL in ${__filename} (${__line})`,message: err});
-        res.status(500).send({message: `Something went wrong. Please try again in few minutes!`});
+        console.log(sql);
+        res.status(500).send({message: `Error 1: Something went wrong. Please try again in few minutes!`});
         return;
     }
     if (result.length > 0) {

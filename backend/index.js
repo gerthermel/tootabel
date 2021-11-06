@@ -8,8 +8,7 @@ var http = require('http').Server(app);
 const router = express.Router();
 const path = require('path');
 const url = require('url');
-//var MySQLStore = require('express-mysql-session')(session);
-const MongoStore = require('connect-mongo');
+var MySQLStore = require('express-mysql-session')(session);
 const io = require('socket.io')(http);
 app.set('io', io);
 const cron = require("node-cron");
@@ -19,7 +18,6 @@ const fs = require('fs');
 const process = require('process');
 const cookieParser = require('cookie-parser')
 const RedisStore = require('connect-redis')(session);
-const db = require('./modules/mongodb');
 
 
 
@@ -65,12 +63,12 @@ Object.defineProperty(global, '__line', {
 
 var now = dateFormat(new Date(), "dd-mm-yyyy");
 app.use("/tootabel/public", express.static(path.join(__dirname, 'public')));
-/*
+
 if(true){
     config.sessPass = 'cascada';
-    config.db_host = 'localhost';
-    config.db_user = 'root';
-    config.db_password = '';
+    config.db_host = '35.228.95.92';
+    config.db_user = 'gerth';
+    config.db_password = 'L@g1tech1';
     config.db_database = 'tootabel';
 }else{
     if( !config.get('sessPass') ){
@@ -120,25 +118,25 @@ app.use(
     })
 )
 
-*/
-app.use(session({
-    secret: 'foo',
-    store: MongoStore.create(options)
-  }));
 const cors = require('cors');
 app.use(cors({
     origin: [
         'http://localhost:4200',
+        'http://192.168.8.102:4200',
+        'http://192.168.8.102/',
+        'https://192.168.8.102/',
         'http://localhost:27017',
         'http://localhost:8080',
-        'https://nolife.appspot.com/',
-        'https://nolife.gg',
-        'http://nolife.gg'
+        'https://tunnilehed.appspot.com/',
+        'https://tunnilehed.ee',
+        'http://server.tunnilehed.ee',
+        'https://server.tunnilehed.ee'
     ], 
     credentials: true
     })
 );
 app.use(sess)
+app.use('/', require('./routes/home'));
 app.use('/tootable/auth', require('./routes/auth'));
 app.use('/tootable/create-account', require('./routes/create-account'));
 app.use('/tootable/company', require('./routes/company'));
