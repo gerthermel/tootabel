@@ -47,7 +47,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
         this.company.companyData.id = data['id'];
         setTimeout(() => {
           let el = document.getElementById('today');
-          el.scrollIntoView({block: "center"});
+          //el.scrollIntoView({block: "center"});
         })
 
       })

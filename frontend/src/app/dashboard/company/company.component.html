@@ -43,19 +43,19 @@
       </tr>
       <ng-container *ngFor="let item of this.table.hours | keyvalue : returnZero; index as i">
         <!-- Single Row -->
-        <tr *ngIf="objectKeys( item.value ).length < 2 ; else multi" [attr.id]=" item.key == this.table.currentDate ? 'today' : null"> 
+        <tr *ngIf="objectKeys( item.value ).length < 2 ; else multi" [attr.day]="i+1" [attr.itemId]=" objectKeys(item.value)[0] ? objectKeys(item.value)[0] : 0 " [attr.id]=" item.key == this.table.currentDate ? 'today' : null"> 
           <ng-template [ngIf]="objectKeys( item.value ).length == 1">
             <td class="let days text-center align-middle" >
               {{i+1}} 
             </td>
             <td class="object" >
-              <input type="text" [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id" [attr.property]="'object'" (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].object }}"/>
+              <input type="text" [attr.property]="'object'" (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].object }}"/>
             </td>
             <td class="hours text-center">
-              <input type="text" [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id" [attr.property]="'hours'" (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].hours }}"/>
+              <input type="text" [attr.property]="'hours'" (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].hours }}"/>
             </td>
             <td class="notes">
-              <textarea rows="1" autosize  [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id" [attr.property]="'notes'" (keypress)="this.table.edit($event)" >{{ item.value[ objectKeys(item.value)[0] ].notes }} </textarea>
+              <textarea rows="1" autosize [attr.property]="'notes'" (keypress)="this.table.edit($event)" >{{ item.value[ objectKeys(item.value)[0] ].notes }} </textarea>
             </td>
             <td class="options">
               <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( item.value[ objectKeys(item.value)[0] ].id, item.key  )"></fa-icon>
@@ -66,42 +66,48 @@
             <td class="let days text-center align-middle" >
               {{i+1}}
             </td>
-            <td class="object" ></td>
-            <td class="hours text-center"></td>
-            <td class="notes"></td>
+            <td class="object" >
+              <input type="text" [attr.property]="'object'" (keypress)="this.table.quickNew($event)" value=""/>
+            </td>
+            <td class="hours text-center">
+              <input type="text" [attr.property]="'hours'" (keypress)="this.table.quickNew($event)" value=""/>
+            </td>
+            <td class="notes">
+              <textarea  rows="1" autosize  [attr.property]="'notes'" (keypress)="this.table.quickNew($event)" ></textarea>
+            </td>
             <td class="options">
             </td>
           </ng-template>
         </tr>
         <!-- Multi Row -->
         <ng-template #multi>
-          <tr [attr.id]=" item.key == this.table.currentDay ? 'today' : null" [attr.id]=" item.key == this.table.currentDate ? 'today' : null">
+          <tr [attr.id]=" item.key == this.table.currentDay ? 'today' : null" [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id" [attr.id]=" item.key == this.table.currentDate ? 'today' : null">
             <td class="let days text-center align-middle" [attr.rowspan]="objectKeys(item.value).length">
               {{i+1}}
             </td>
-            <td class="object" >
-              <input type="text" [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id" [attr.property]="'id'" (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].object }}"/>
+            <td class="object">
+              <input type="text"  [attr.property]="'object'" (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].object }}"/>
             </td>
             <td class="hours text-center">
-              <input type="text" [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id"  [attr.property]="'hours'"  (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].hours }}" />
+              <input type="text"   [attr.property]="'hours'"  (keypress)="this.table.edit($event)" value="{{ item.value[ objectKeys(item.value)[0] ].hours }}" />
             </td>
             <td class="notes" >
-              <textarea rows="1" autosize  [attr.itemId]="item.value[ objectKeys(item.value)[0] ].id" [attr.property]="'notes'" (keypress)="this.table.edit($event)" > {{ item.value[ objectKeys(item.value)[0] ].notes }}</textarea>
+              <textarea rows="1" autosize  [attr.property]="'notes'" (keypress)="this.table.edit($event)" > {{ item.value[ objectKeys(item.value)[0] ].notes }}</textarea>
             </td>
             <td class="options">
               <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
             </td>
           </tr>
           <ng-container *ngFor="let row of item.value | keyvalue : returnZero | slice:1 ">
-            <tr >
+            <tr [attr.itemId]="row.value.id">
               <td class="object" >
-                <input type="text" [attr.itemId]="row.value.id" [attr.property]="'object'" (keypress)="this.table.edit($event)" value="{{row.value.object }}"/>
+                <input type="text"  [attr.property]="'object'" (keypress)="this.table.edit($event)" value="{{row.value.object }}"/>
               </td>
               <td class="hours text-center">
-                <input type="text" [attr.itemId]="row.value.id" [attr.property]="'hours'" (keypress)="this.table.edit($event)" value="{{row.value.hours }}"/>
+                <input type="text"  [attr.property]="'hours'" (keypress)="this.table.edit($event)" value="{{row.value.hours }}"/>
               </td>
               <td class="notes">
-                <textarea  rows="1" autosize  [attr.itemId]="row.value.id" [attr.property]="'notes'" (keypress)="this.table.edit($event)" >{{row.value.notes }}</textarea>
+                <textarea  rows="1" autosize  [attr.property]="'notes'" (keypress)="this.table.edit($event)" >{{row.value.notes }}</textarea>
               </td>
               <td class="options">
                 <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( row.value.id, item.key )" ></fa-icon>
@@ -153,7 +159,6 @@
 <div id="loadingTables" *ngIf="this.table.isTableLoading">
   <fa-icon icon="circle-notch" spin="true"></fa-icon>
 </div>
-
 <div class="bottom">
   <div class="wrap">
     <div class="left d-lg-none align-self-center">

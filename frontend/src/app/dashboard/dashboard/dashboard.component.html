@@ -137,7 +137,7 @@
                     </select>
                   </div>
                   <div class="col-4 pl-1">
-                    <select class="form-control pl-1 pr-1" aria-label="Default select example">
+                    <select class="form-control pl-1 pr-1" aria-label="">
                       <option 
                       [(ngModel)]="year"
                       ngDefaultControl
@@ -166,7 +166,7 @@
                 <textarea         
                   ngModel
                   #name="ngModel" 
-                  name="tasks"
+                  name="notes"
                   type="text" 
                   class="form-control"  
                   placeholder="" 
@@ -197,13 +197,22 @@
     <div  [@slideUp]="this.company.slidePanel.newFilter" class="newFilter d-lg-none">
       <div class="row">
         <div class="col-10 align-self-center">
-          <h4>Filtrid</h4>
+          <h4>Info</h4>
         </div>
         <div class="col-2 align-self-center text-end">
           <h4>
             <fa-icon [icon]="['fas','times']" (click)="this.company.closeSidebar()"></fa-icon>
           </h4>
         </div>
+      </div>
+      <div>
+        <div *ngFor="let item of this.table.hours.week | keyvalue" > 
+
+          <span placement="right" ngbTooltip="{{ item.value['startDate'] | date : 'd. MMM' }} -  {{ item.value['endDate'] | date : 'd. MMM' }}" >
+            <fa-icon [icon]="['fas','chevron-right']" *ngIf="item.value['currentWeek']"></fa-icon> Nädal {{item.key}}: {{ item.value['hours'] }}
+          </span>
+        </div>
+        <b>Tunde kokku: {{ this.table.totalHours }}</b>
       </div>
     </div>
 

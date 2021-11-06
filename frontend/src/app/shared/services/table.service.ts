@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Input } from '@angular/core';
+import { Injectable, Input, Renderer2, RendererFactory2 } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { AlertService } from './alert.service';
@@ -37,6 +37,7 @@ export class TableService {
     11:'Detsember',
   }
   public years = new Array();
+  public weeksInMonth;
   @Input() selectedDay = this.currentDay;
   @Input() selectedMonth = this.currentMonth;
   @Input() selectedYear = this.currentYear;
@@ -46,11 +47,13 @@ export class TableService {
   public totalHours = 0;
   public tyymaad;
   public updateBuffer;
+  private renderer:Renderer2;
   constructor(
     public service:AppService,
     public http: HttpClient,
     public alert:AlertService,
-    public company:CompanyService
+    public company:CompanyService,
+    public rendererFactory:RendererFactory2
   ) { 
   }
   
@@ -61,6 +64,8 @@ export class TableService {
         this.isTableLoading = false;
         this.totalHours = res['hours'];
         this.tyymaad = res['tyymaad'];
+        this.getWeeksInMonth();
+        console.log(this.weeksInMonth)
       },
       (error)=>{
 
@@ -75,7 +80,6 @@ export class TableService {
   public getDays() {
     return new Date(this.selectedYear, this.filterSelectedMonth+1, 0).getDate();
   };
-
 
   public generateYears(){
     for(let i = this.currentYear-5;i <= this.currentYear; i++){
@@ -109,27 +113,36 @@ export class TableService {
   }
 
   public createNewEntry(f:NgForm){
-    var form = f.value;
+    var formData = new FormData()
     var date = `${this.selectedYear}-${this.selectedMonth+1}-${this.selectedDay}`;
-    form['company_id'] = this.service.selectedCompany;
-    form['date'] = date;
-    form['month'] = this.selectedMonth+1;
-    form['year'] = this.selectedYear;
-    form['day'] = this.selectedDay;
-    this.http.post(environment.apiUrl+'/tootable/table/new-entry',{form:  form}, {withCredentials: true}).subscribe(
+    formData.append('company_id', this.service.selectedCompany)
+    formData.append('date', date)
+    formData.append('month', `${this.selectedMonth+1}`)
+    formData.append('year', `${this.selectedYear}`)
+    formData.append('day', `${this.selectedDay}`)
+    formData.append('notes', f.value['notes'])
+    formData.append('hours', f.value['hours'])
+    formData.append('object', f.value['object'])
+    //form['company_id'] = this.service.selectedCompany;
+    //form['date'] = date;
+    //form['month'] = this.selectedMonth+1;
+    //form['year'] = this.selectedYear;
+    //form['day'] = this.selectedDay;
+    this.insertNew(formData).subscribe(
       (res)=>{
-        var newEntry = { 'task': form['tasks'], 'hours': form['hours'] };
-        //console.log(this.hours)
-        let date = `${form['year']}-${form['month']}-${form['day']}`;
-        this.hours[ date ][ res['data']['id'] ] = res['data'];
-        console.log(this.hours);
-        this.company.closeSidebar()
+        this.addHours(res);
       },
 	    (error)=>{
 		    this.alert.error(error.error.message)
 	    }
-    )
+    );
+    this.company.closeSidebar()
   };
+
+  addHours(res){
+    let date = res['data']['date'];
+    this.hours[ date ][ res['data']['id'] ] = res['data'];
+  }
 
   public generateCalendarArray(){
     for(let y = this.currentYear-10;y <= this.currentYear+10; y++){
@@ -165,18 +178,47 @@ export class TableService {
     }
   }
 
-  edit(event){
+  quickNew(event){
+    var row = event.currentTarget.parentElement.parentElement
     clearTimeout(this.updateBuffer);
     this.updateBuffer = setTimeout(()=>{
-      console.log('saved')
+      if( row.getAttribute('itemId')==0 ){
+        var value = event.target.value;
+        var propertyName = event.target.getAttribute('property')
+        var formData: FormData = new FormData();
+        formData.append('company_id', this.service.selectedCompany);
+        formData.append('date', `${this.selectedYear}-${this.selectedMonth+1}-${row.getAttribute('day')}`);
+        formData.append(`${propertyName}`, value);
+        this.insertNew(formData).subscribe(
+          (res)=>{
+            this.addHours(res); 
+            var id = res['data']['id'];
+            row.setAttribute('itemId',id)
+          },
+          (error)=>{
+            this.alert.error(error.error.message)
+          }
+        );
+      }else{
+        console.log('needs to edit')
+      }
+    },800)
+  }
+
+  insertNew(form){
+    return this.http.post(environment.apiUrl+'/tootable/table/new-entry', form, {withCredentials: true})
+  }
+  
+  edit(event){
+    var itemId = event.currentTarget.parentElement.parentElement.getAttribute('itemId');
+    clearTimeout(this.updateBuffer);
+    this.updateBuffer = setTimeout(()=>{
       var value = event.target.value;
-      var itemId = event.target.getAttribute('itemId');
       var propertyName = event.target.getAttribute('property')
       var formData: FormData = new FormData();
       formData.append('id', itemId);
       formData.append('property', propertyName);
       formData.append('value', value);
-      console.log(formData);
       this.http.put(environment.apiUrl+'/tootable/table/edit-entry', formData, {withCredentials: true}).subscribe(
         
       )
@@ -184,6 +226,32 @@ export class TableService {
 
 
 
+  }
+
+ getWeeksInMonth() {
+    const year = this.selectedYear
+    const month = this.selectedMonth
+    const weeks = [],
+      firstDate = new Date(year, month, 1),
+      lastDate = new Date(year, month + 1, 0),
+      numDays = lastDate.getDate();
+  
+    let dayOfWeekCounter = firstDate.getDay();
+  
+    for (let date = 1; date <= numDays; date++) {
+      if (dayOfWeekCounter === 0 || weeks.length === 0) {
+        weeks.push([]);
+      }
+      weeks[weeks.length - 1].push(date);
+      dayOfWeekCounter = (dayOfWeekCounter + 1) % 7;
+    }
+    this.weeksInMonth = weeks
+      .filter((w) => !!w.length)
+      .map((w) => ({
+        start: w[0],
+        end: w[w.length - 1],
+        dates: w,
+      }));
   }
 
   deleteEntry(id, date){
@@ -196,5 +264,9 @@ export class TableService {
         this.alert.error(error.error.message)
       }
     )
+  }
+  convertToDate(string){
+    console.log(string)
+    return  new Date(string)
   }
 }

@@ -101,6 +101,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 	}
 
     ngAfterViewInit(): void {
-        this.cd.detectChanges();
     }
 }
