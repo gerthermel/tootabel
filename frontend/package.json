@@ -39,6 +39,7 @@
     "bootstrap": "^4.5.0",
     "connect-mongo": "^4.4.1",
     "express": "^4.15.2",
+    "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "mydatepicker": "^2.6.11",
     "ng-pick-datetime": "^7.0.0",
