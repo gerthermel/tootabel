@@ -6,7 +6,7 @@ $menu-color:#bfbfbf;
   color:$menu-color;
 }
 .body{
-  background-color:#f5f5f5;
+  background-color:#f3f4f5;
   z-index: 0;
   display: flex;
   flex-direction: column;
@@ -31,13 +31,30 @@ $menu-color:#bfbfbf;
   }
 */
   .row:nth-of-type(1){
-    border-bottom:solid 1px #bfbfbf;
+    //border-bottom:solid 2px #eaeaea;
     padding-top:15px;
     padding-bottom:15px;
+    background-color:white;
+    box-shadow: 0px 0px 11px 4px #eaeaea;
   }
 
 }
 
+.overviewMenu{
+  padding:15px;
+  z-index: 3;
+  width: 400px;
+  height: 100vh;
+  /* border: solid thin red; */
+  background-color: white;
+  position: absolute;
+  right: -400px;
+  top: 0px;
+  box-shadow: -20px 0px 20px 0px #0000000d;
+  .wrap{
+    height:100vh;
+  }
+}
 .addEntryModal{
   z-index: 3;
   width: 400px;

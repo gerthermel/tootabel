@@ -51,7 +51,7 @@ import { TableService } from 'src/app/shared/services/table.service';
 	]),
 	trigger('slideRight', [
 		state('hide', style({
-				'right': '-100vw',
+				'right': '-400px',
 			})),
 		state('show', 
 			style({

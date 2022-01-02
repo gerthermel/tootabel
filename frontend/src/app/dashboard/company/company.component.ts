@@ -5,6 +5,8 @@ import { state, trigger, style, transition, animate } from '@angular/animations'
 import { CompanyService } from 'src/app/shared/services/company.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../environments/environment';
+import { CoreEnvironment } from '@angular/compiler/src/compiler_facade_interface';
 
 @Component({
   selector: 'app-company',
@@ -17,6 +19,8 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 export class CompanyComponent implements OnInit, AfterViewInit {
   private routeSub;
+  public quickAdd = environment.quickAdd;
+  public quickEdit = environment.quickEdit;
 
   objectKeys = Object.keys;
   constructor(
@@ -47,7 +51,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
         this.company.companyData.id = data['id'];
         setTimeout(() => {
           let el = document.getElementById('today');
-          //el.scrollIntoView({block: "center"});
+          el.scrollIntoView({block: "center"});
         })
 
       })

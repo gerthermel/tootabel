@@ -1,1 +1,13 @@
-home
+<ng-template [ngIf]="this.company.myCompaniesLoading" [ngIfElse]="loaded">
+	<div class="text-center p-5">
+		<fa-icon [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+	</div>
+</ng-template>
+<ng-template #loaded>
+	<ng-template [ngIf]=" this.company.myCompanies.length == 1" [ngIfElse]="more">
+		one
+	</ng-template>
+	<ng-template #more>
+		mroe than one
+	</ng-template>
+</ng-template>

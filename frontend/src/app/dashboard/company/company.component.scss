@@ -1,9 +1,11 @@
+$border-color: #eeeeef;
 :host{
   display: flex;
   flex-direction: column;
   overflow:hidden;
   width: 100%;
-  height: calc(100vh - 77px);
+  //height: calc(100vh - 77px);
+  height: calc(100vh - 54px);
 }
 .top,.middle,.bottom{
   width: 100%;
@@ -79,6 +81,7 @@
     border-collapse: separate;
     border-spacing: 0px;
     border:none;
+    margin-bottom: 50px;
 
     &.table-bordered{
       border:none;
@@ -90,18 +93,37 @@
       position: sticky;
       top: 0;
       background-color: white;
-      border-right:  none;
+      color:#777777;
+      font-weight:normal;
+      font-size:13px;
+      
+      /*
+      border-right:  none !important;
       border-top:  1px solid #dee2e6;
       border-bottom:  1px solid #dee2e6;
+      */
+      border-left:  none !important;
+      border-right:  none !important;
+      border-top:  none !important;
+      border-bottom:  1px solid $border-color;
       text-align: center;
       .dropdown-toggle::after{
         display:none;
       }
+      fa-icon{
+        display:none;
+      }
     }
     td{
+      padding:3px;
+      padding-left:10px;
+      padding-right:10px;
       border-bottom:  none;
       border-right:  none;
+      border-color:$border-color !important;
       white-space: nowrap;
+      &:first-child{
+      }
       input.hours{
         width:50px;
         text-align: center;
@@ -143,7 +165,7 @@
   width: 100%;
   /* align-self: center; */
   align-self: center;
-  display: flex;
+  display: none; //flex
   padding-right: 15px;
   padding-left: 15px;
   flex:1;
@@ -227,6 +249,7 @@
     height:initial;
   }
   .middle{
+    padding-right:0px;
     table{
       margin-left:0px;
     }

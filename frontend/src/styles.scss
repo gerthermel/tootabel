@@ -3,9 +3,49 @@ $menu-color:#bfbfbf;
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+html{
+  background-image: url('./assets/bg2w.jpg');
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+.btn-iceblue{
+  color:#222222;
+  background: linear-gradient(45deg, rgb(90, 255, 192), rgb(3, 232, 248));
+  &:hover{
+    background: linear-gradient(45deg,  rgb(3, 232, 248), rgb(90, 255, 192));
+  }
+}
+.btn-grey{
+  color:#222222;
+  border:solid 1px #ced4da !important;
+  background: linear-gradient(45deg, #e9ecef, #e9ecef);
+  &:hover{
+    background: linear-gradient(45deg,  #d8d8d8, #d8d8d8);
+  }
+}
+.btn-purple{
+  color:white !important;
+  background: linear-gradient(45deg, #ab6cad, #744dad);
+  &:hover{
+    background: linear-gradient(45deg,  #604091, #604091);
+  }
+}
+.btn-blue{
+  color:white !important;
+  background: linear-gradient(45deg, #52b6e4, #2a9aca);
+  &:hover{
+    background: linear-gradient(45deg,  #604091, #604091);
+  }
+}
 body{
     overflow:hidden;
     position: relative;
+    background-color: transparent !important;
   }
 .left{
 

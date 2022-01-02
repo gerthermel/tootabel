@@ -2,5 +2,19 @@
     width:400px;
     margin-left:auto;
     margin-right:auto;
-    margin-top:100px;
+    margin-top:calc( (100vh - 400px) / 2);
+    background-color:white;
+    border-radius: 13px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 1rem;
+    position: relative;
+    background: linear-gradient(45deg, rgb(90, 255, 192), rgb(3, 232, 248));
+    padding: 7px;
+    color:white;
+    form{
+        background: white;
+        padding: 2rem;
+        color:initial;
+        border-radius: 9px;
+    }
 }

@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CompanyComponent } from './company/company.component';
 import { CompanyResolver } from '../shared/guards/company-resolver.service';
+import { MenuResolver } from '../shared/guards/menu-resolver.service';
 
 
 const routes: Routes = [
@@ -18,18 +19,21 @@ const routes: Routes = [
         component: LoginComponent 
       },
       {
-        path: '',
-        component: HomeComponent,
-        canActivate: [AuthGuard],
-      },   
-      {
         path: 'firma/:id',
         component: CompanyComponent,
         canActivate: [AuthGuard],
         resolve: {
           resolver: CompanyResolver
         },
-      },   
+      },
+      {
+        path: '',
+        component: HomeComponent,
+        canActivate: [AuthGuard],
+        resolve: {
+          resolver: MenuResolver
+        },
+      },    
   ]
   }
 ];

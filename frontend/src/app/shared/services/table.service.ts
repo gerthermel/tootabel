@@ -139,6 +139,7 @@ export class TableService {
     //form['day'] = this.selectedDay;
     this.insertNew(formData).subscribe(
       (res)=>{
+        delete this.hours['data'][date][0]
         this.addHours(res);
       },
 	    (error)=>{
@@ -151,7 +152,6 @@ export class TableService {
   public addHours(res){
     let data = res['data']
     let date = data['date'];
-    console.log(data)
     if(!this.hours['data'][ date ][ data['id'] ]){
       this.hours['data'][ date ][ data['id'] ] = data
     }else{
@@ -244,8 +244,6 @@ export class TableService {
     }
   }
 
-
-
   public timeOut(event){
     clearTimeout(this.updateBuffer);
     this.updateBuffer = setTimeout(()=>{ 
@@ -285,6 +283,9 @@ export class TableService {
   }
 
   public async  quickNew(event){
+    if( !environment.quickAdd ){
+      return;
+    }
     console.log('quickNew')
     var rowInputs = this.getRowInputs(event)
       var row = event.target.parentElement.parentElement

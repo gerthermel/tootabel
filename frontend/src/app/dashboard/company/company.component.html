@@ -1,5 +1,23 @@
 <div class="top d-none d-lg-block">
-  <div class="input-group mr-3">
+
+  <h2 class="float-left">{{ this.table.months[this.table.selectedMonth] }}</h2>
+  
+  <div class="btn btn-blue addHours" (click)='this.company.openSidebar("newEntry")'>
+    <fa-icon [icon]="['far', 'clock']" class="mr-2"></fa-icon>
+    Lisa Sissekanne
+  </div>
+  
+  <div class="btn btn-light mr-2 float-right text-center" (click)="this.company.openSidebar('overviewMenu')">
+    <fa-icon [icon]="['fas', 'chart-bar']" class="mr-2" ></fa-icon>
+    Ülevaade
+  </div>
+  <div class="btn btn-light mr-2 float-right text-center" >
+    <fa-icon [icon]="['fas', 'envelope-open-text']" class="mr-2"></fa-icon>
+    Jaga
+  </div>
+
+<!-- 
+  <div class="input-group ml-3 mr-3 float-right">
     <label class="input-group-text" for="inputGroupSelect01">
       <fa-icon [icon]="['fas', 'map-marked-alt']" ></fa-icon>
     </label>
@@ -9,7 +27,7 @@
     <div class="shadow-bottom"></div>
   </div>
 
-  <div class="input-group">
+  <div class="input-group ml-3 float-right">
     <label class="input-group-text" for="">
       <fa-icon [icon]="['fas', 'calendar-alt']" ></fa-icon>
     </label>
@@ -26,16 +44,13 @@
       </option>
     </select>
   </div>
+-->
 
-  <div class="btn btn-success addHours" (click)='this.company.openSidebar("newEntry")'>
-    <fa-icon [icon]="['fas', 'user-clock']" class="mr-2"></fa-icon>
-    Lisa Sissekanne
-  </div>
 </div>
 <div class="middle scroll-1">
     <table class="table table-bordered">
       <tr>
-        <th scope="col text-center d-sm-block" style="min-width:79px;">
+        <th scope="col text-center d-sm-block" style="min-width:79px;width:79px;">
           <div  >
             Päev <fa-icon [icon]="['fas','ellipsis-v']" class="ml-2"></fa-icon>
           </div>
@@ -83,13 +98,13 @@
               {{i+1}} 
             </td>
             <td class="object" >
-              <span type="text" class="object" [attr.property]="'object'" (keyup)="this.table.edit($event)" contenteditable>{{ item.value[ objectKeys(item.value)[0] ].object }}</span>
+              <span type="text" class="object" [attr.property]="'object'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>{{ item.value[ objectKeys(item.value)[0] ].object }}</span>
             </td>
             <td class="hours text-center">
-              <span type="text" class="hours" [attr.property]="'hours'" (keyup)="this.table.edit($event)" contenteditable>{{ item.value[ objectKeys(item.value)[0] ].hours }}</span>
+              <span type="text" class="hours" [attr.property]="'hours'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>{{ item.value[ objectKeys(item.value)[0] ].hours }}</span>
             </td>
             <td class="notes">
-              <span rows="1" class="notes" [attr.property]="'notes'" (keyup)="this.table.edit($event)" contenteditable>{{ item.value[ objectKeys(item.value)[0] ].notes }} </span>
+              <span rows="1" class="notes" [attr.property]="'notes'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>{{ item.value[ objectKeys(item.value)[0] ].notes }} </span>
             </td>
             <td class="options">
               <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( item.value[ objectKeys(item.value)[0] ].id, item.key  )"></fa-icon>
@@ -101,13 +116,13 @@
               {{i+1}}
             </td>
             <td class="object" [attr.property]="'object'">
-              <span type="text" class="object" [attr.property]="'object'" (focusout)="this.table.focusOut($event)" (keyup)="this.table.timeOut($event)" contenteditable></span>
+              <span type="text" class="object" [attr.property]="'object'" (focusout)="this.table.focusOut($event)" (keyup)="this.table.timeOut($event)" [attr.contenteditable]='quickAdd'></span>
             </td>
             <td class="hours text-center" [attr.property]="'hours'">
-              <span type="text" class="hours" [attr.property]="'hours'" (focusout)="this.table.focusOut($event)" (keyup)="this.table.timeOut($event)" contenteditable></span>
+              <span type="text" class="hours" [attr.property]="'hours'" (focusout)="this.table.focusOut($event)" (keyup)="this.table.timeOut($event)" [attr.contenteditable]='quickAdd'></span>
             </td>
             <td class="notes" [attr.property]="'notes'">
-              <span  rows="1" class="notes" [attr.property]="'notes'" (focusout)="this.table.focusOut($event)" (keyup)="this.table.timeOut($event)" contenteditable></span>
+              <span  rows="1" class="notes" [attr.property]="'notes'" (focusout)="this.table.focusOut($event)" (keyup)="this.table.timeOut($event)" [attr.contenteditable]='quickAdd'></span>
             </td>
             <td class="options">
             </td>
@@ -120,17 +135,17 @@
               {{i+1}}
             </td>
             <td class="object">
-              <span type="text" class="object" [attr.property]="'object'" (keyup)="this.table.edit($event)" contenteditable>
+              <span type="text" class="object" [attr.property]="'object'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>
                 {{ item.value[ objectKeys(item.value)[0] ].object }}
               </span>
             </td>
             <td class="hours text-center">
-              <span type="text" class="hours" [attr.property]="'hours'"  (keyup)="this.table.edit($event)" contenteditable>
+              <span type="text" class="hours" [attr.property]="'hours'"  (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>
                 {{ item.value[ objectKeys(item.value)[0] ].hours }}
               </span>
             </td>
             <td class="notes" >
-              <span rows="1" class="notes" autosize  [attr.property]="'notes'" (keyup)="this.table.edit($event)" contenteditable> {{ item.value[ objectKeys(item.value)[0] ].notes }}</span>
+              <span rows="1" class="notes" autosize  [attr.property]="'notes'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'> {{ item.value[ objectKeys(item.value)[0] ].notes }}</span>
             </td>
             <td class="options">
               <fa-icon [icon]="['far', 'trash-alt']"></fa-icon>
@@ -139,17 +154,17 @@
           <ng-container *ngFor="let row of item.value | keyvalue : returnZero | slice:1 ">
             <tr [attr.itemId]="row.value.id">
               <td class="object" >
-                <span type="text" class="object" [attr.property]="'object'" (keyup)="this.table.edit($event)" contenteditable>
+                <span type="text" class="object" [attr.property]="'object'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>
                   {{row.value.object }}
                 </span>
               </td>
               <td class="hours text-center">
-                <span type="text" class="hours" [attr.property]="'hours'" (keyup)="this.table.edit($event)" contenteditable>               
+                <span type="text" class="hours" [attr.property]="'hours'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>               
                   {{row.value.hours }}
                 </span>
               </td>
               <td class="notes">
-                <span  rows="1" class="notes" autosize  [attr.property]="'notes'" (keyup)="this.table.edit($event)" contenteditable>{{row.value.notes }}</span>
+                <span  rows="1" class="notes" autosize  [attr.property]="'notes'" (keyup)="this.table.edit($event)" [attr.contenteditable]='quickEdit'>{{row.value.notes }}</span>
               </td>
               <td class="options">
                 <fa-icon [icon]="['far', 'trash-alt']" (click)="this.table.deleteEntry( row.value.id, item.key )" ></fa-icon>
@@ -201,7 +216,7 @@
 <div id="loadingTables" *ngIf="this.table.isTableLoading">
   <fa-icon icon="circle-notch" spin="true"></fa-icon>
 </div>
-<div class="bottom">
+<div class="bottom d-flex d-lg-none">
   <div class="wrap">
     <div class="left d-lg-none align-self-center">
       <button class="btn btn-primary" (click)='this.company.openSidebar("newFilter")'>

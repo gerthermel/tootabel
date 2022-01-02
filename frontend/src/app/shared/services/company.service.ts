@@ -21,6 +21,7 @@ export class CompanyService {
     mainMenu:'hide',
     newFilter:'hide',
     newCompanyModal:'hide',
+    overviewMenu:'hide',
   }
   public backDrop:string = 'out';
   private activePanel = [];
@@ -39,6 +40,7 @@ export class CompanyService {
 	}
 
   openSidebar(panel, ignore?:boolean){
+    console.log(panel)
 		if(panel != this.activePanel && !ignore){
 			//this.slidePanel[this.activePanel] = 'hide';
       this.slidePanel[ this.activePanel[this.activePanel.length-1] ] = 'hide';
@@ -71,18 +73,20 @@ export class CompanyService {
 	}
 
   getMyCompanies(){
-    this.http.get(environment.apiUrl+'/tootable/company/my-companies', {withCredentials: true}).subscribe(
-      (res)=>{
-        var data:any = res;
-        for( let company of data ){
-          this.myCompanies.push(company)
-				}
-        this.myCompaniesLoading = false;
-      },
-      (error)=>{
-        this.alert.error(error.error.message)
-      }
-    )
+    if( this.myCompanies.length == 0){
+      this.http.get(environment.apiUrl+'/tootable/company/my-companies', {withCredentials: true}).subscribe(
+        (res)=>{
+          var data:any = res;
+          for( let company of data ){
+            this.myCompanies.push(company)
+          }
+          this.myCompaniesLoading = false;
+        },
+        (error)=>{
+          this.alert.error(error.error.message)
+        }
+      )
+    }
 
   }
 
