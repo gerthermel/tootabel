@@ -21,7 +21,7 @@ export class TableService {
   public currentYear = this.now.getFullYear();
   public daysInMonth = this.getDaysInMonth(1, 2012);
   public currentDate = `${this.currentYear}-${this.currentMonth+1}-${this.currentDay}`
-  public daysInCurrentMonth = new Array(new Date(this.now.getFullYear(), this.now.getMonth()+1, 0).getDate());
+  public daysInCurrentMonth = new Array(new Date(this.now.getFullYear(), this.now.getMonth(), 0).getDate());
   public monthArray = new Array() 
   public months:{[key: number]: string} = {
     0:'Jaanuar',
@@ -45,7 +45,7 @@ export class TableService {
   @Input() selectedYear = this.currentYear;
   public filterSelectedMonth = this.currentMonth;
   public filterSelectedYear = this.currentYear;
-  public hours:object = {};
+  public hours:any = {};
   public totalHours = 0;
   public tyymaad;
   public updateBuffer;
@@ -63,10 +63,12 @@ export class TableService {
   }
   
   public getData(){
-    this.http.get(environment.apiUrl+`/tootable/table/${this.service.selectedCompany}/hours/${this.filterSelectedMonth}/${this.filterSelectedYear}`, {withCredentials: true}).subscribe(
+    var date = new Date()
+    var date2 = new Date('2021-01-01')
+    this.http.get(environment.apiUrl+`/tootable/table/${this.service.selectedUser}/hours/${this.filterSelectedMonth}/${this.filterSelectedYear}`, {withCredentials: true}).subscribe(
       (res)=>{
         this.hours = res['data'];
-        console.log(this.hours)
+        console.log(res['data']['data'])
         this.isTableLoading = false;
         this.totalHours = res['hours'];
         this.tyymaad = res['tyymaad'];
@@ -79,7 +81,6 @@ export class TableService {
   }
 
   public filterObjects(){
-    console.log(this.tyymaad);
   }
 
   public getDaysInMonth(month,year) {
@@ -155,7 +156,6 @@ export class TableService {
     if(!this.hours['data'][ date ][ data['id'] ]){
       this.hours['data'][ date ][ data['id'] ] = data
     }else{
-      console.log(this.hours['data'][ date ][data['id']])
       Object.assign(this.hours['data'][ date ][data['id']], data)
     }
   }
@@ -182,6 +182,7 @@ export class TableService {
     this.isTableLoading = true;
     if( this.filterSelectedMonth > 0 ){
       this.filterSelectedMonth = this.filterSelectedMonth-1
+      this.selectedMonth = this.filterSelectedMonth;
       this.getData();
     }
   }
@@ -190,6 +191,7 @@ export class TableService {
     this.isTableLoading = true;
     if( this.filterSelectedMonth < 11 ){
       this.filterSelectedMonth = this.filterSelectedMonth+1
+      this.selectedMonth = this.filterSelectedMonth;
       this.getData();
     }
   }
@@ -223,7 +225,6 @@ export class TableService {
       this.entryQueue[date] = {}
     }
     this.entryQueue[date][data.propertyName] = data;
-    console.log('We have inserted your data into queue')
   }
 
   public setSaveHistory(date, property, value){
@@ -264,18 +265,15 @@ export class TableService {
   }
 
   public async getRowInputs(event){
-    console.log('getting input of all td')
     return new Promise(resolve => {
       let data = {}
       var inputList = event.target.parentElement.parentNode.children;
       for (let key in inputList) {
         var propertyName = inputList[key].getAttribute('property')
         if(propertyName){
-          console.log('returning all input of all td')
           var value = inputList[key].innerText
           
           data[propertyName] = value
-          console.log(data);
         }
       }
       resolve(data);
@@ -286,7 +284,6 @@ export class TableService {
     if( !environment.quickAdd ){
       return;
     }
-    console.log('quickNew')
     var rowInputs = this.getRowInputs(event)
       var row = event.target.parentElement.parentElement
       var date = row.getAttribute('date')
@@ -305,7 +302,6 @@ export class TableService {
         
         if( this.checkRowSatus(date) ){
           //we need to edit when first insert of row is done and id has been set so we add these into queue
-          console.log('we have already insertion in progress so we add into queue instead')
           this.insertIntoQueue(date, {'company_id':this.service.selectedCompany, 'date':date,'propertyName':propertyName,'value':value,'loading':true,})
         }else{
           this.setRowStatus(date, true) //we set row into loading so that we can check it
@@ -313,16 +309,12 @@ export class TableService {
             (res)=>{
               var id = res['data']['id'];
                //we get other td values and merge them
-              console.log('-----------------')
               Object.assign(this.hours['data'][date][0], res['data']); 
               delete this.hours['data'][date][0]
-              console.log('-----------------')
               this.addHours(res); //once they merged we insert into main object variable
               row.setAttribute('itemId',id)
               this.setRowStatus(date, false)
-              console.log('Lets check if anything is in queue')
               if( this.entryQueue[date] ){
-                console.log('There are items in que')
                 for (let key in this.entryQueue[date]) {
                   let item = this.entryQueue[date][key];
                   let object = {
@@ -422,7 +414,6 @@ export class TableService {
   }
 
   convertToDate(string){
-    console.log(string)
     return  new Date(string)
   }
 }

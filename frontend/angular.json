@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "8638a86a-00ca-48f3-8289-561294b16c32"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -61,6 +64,7 @@
                 }
               ]
             }
+
           }
         },
         "serve": {
@@ -71,7 +75,16 @@
           "configurations": {
             "production": {
               "browserTarget": "frontend:build:production"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
+
           }
         },
         "extract-i18n": {

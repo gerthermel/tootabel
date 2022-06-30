@@ -33,7 +33,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@germel-media/registration-lib": "^1.1.1",
+    "@germel-media/registration-lib": "^1.1.2",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@nguniversal/express-engine": "^11.0.1",
     "bootstrap": "^4.5.0",

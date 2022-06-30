@@ -11,6 +11,7 @@ import { environment } from "src/environments/environment";
 import { AppService } from "../services/app.service";
 import { CompanyService } from "../services/company.service";
 import {Router} from '@angular/router';
+import { PermissionsService } from "../services/permissions.service";
 
 
 
@@ -29,32 +30,16 @@ export class MenuResolver implements Resolve<object>{
       public router:Router,
       public service:AppService,
       public company:CompanyService,
+      public permissions:PermissionsService,
     ){ }
 
     resolve(
       route: ActivatedRouteSnapshot, 
       state: RouterStateSnapshot
     ): Observable<object> | Promise<object> | object {
-        if (isPlatformBrowser(this.platformId)) {
-          //this.table.generateCalendarArray()
-          if( this.company.myCompanies.length == 0){
-            return  this.http.get(environment.apiUrl+'/tootable/company/my-companies', {withCredentials: true}).pipe(
-              map(
-                (res)=>{
-                  var data:any = res;
-                  for( let company of data ){
-                    this.company.myCompanies.push(company)
-                  }
-                  this.company.myCompaniesLoading = false;
-                  if( this.company.myCompanies.length == 1){
-                    this.router.navigate(['/firma/'+this.company.myCompanies[0].id]); 
-                  }
-                },
-                (error)=>{
-                }
-              )//end map
-            )//enbd pipe
-          }
-        }//endif
+      if (isPlatformBrowser(this.platformId)) {
+        //this.table.generateCalendarArray()
+          return  this.http.get(environment.apiUrl+'/tootable/company/my-companies', {withCredentials: true})
+      }//endif
     }//end of resolve
 }//end of class

@@ -11,6 +11,12 @@ $menu-color:#bfbfbf;
   display: flex;
   flex-direction: column;
   padding:0px;
+  height:100%;
+  overflow: hidden;
+
+  .bottom{
+    height:100%;
+  }
 
 /*
 
@@ -102,11 +108,9 @@ $menu-color:#bfbfbf;
   }
 
   .bottom{
-    flex: 1;
     overflow: hidden;
     /* flex-direction: column; */
     height: 100%;
-    display: flex;
   }
   .mainWrap{
     height: 100%;
@@ -129,6 +133,9 @@ $menu-color:#bfbfbf;
     .bottom{
       min-height:55px
     }
+  }
+  .overviewMenu{
+    box-shadow: none;
   }
 }
 

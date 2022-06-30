@@ -10,7 +10,8 @@ import { environment } from '../../../environments/environment';
 
 export class AuthService{
 	authChanged = new EventEmitter();
-	public isAuthenticated = false;
+	public isLoading = true;
+	public isAuthenticated:any='loading';
 	public userData:any = {};
 	constructor( 
 		private http: HttpClient, 
@@ -52,12 +53,11 @@ export class AuthService{
 	}
 
 	signOut(){
-		this.http.get(environment.apiUrl+'/tootable/sign-out', {withCredentials: true}).subscribe(
+		console.log('sign out')
+		this.http.get(environment.apiUrl+'/tootable/auth/sign-out', {withCredentials: true}).subscribe(
 			(data)=>{
 				this.isAuthenticated = false;
 				this.userData = {};
-				localStorage.setItem('authData', JSON.stringify({isAuth:false, userData: {}}))
-				this.authChanged.emit( data )
 			},
 			(error) => {
 				//this.alert.error(error.error.message)

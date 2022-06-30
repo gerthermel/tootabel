@@ -1,0 +1,36 @@
+:host ::ng-deep{
+  .wrap{
+    padding: 7px !important;
+    width:400px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:calc( (100vh - 400px) / 2);
+    background-color:white;
+    border-radius: 13px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 1rem;
+    position: relative;
+    background: linear-gradient(45deg, rgb(90, 255, 192), rgb(3, 232, 248));
+    padding: 7px;
+    color:white;
+    form{
+      padding:15px !important;
+      background-color: white;
+      width: 100%;
+      height:100%;
+      border-radius: 9px;
+      .row{
+        width:100%;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+      }
+      #submit{
+        color:#222222 !important;
+        background: linear-gradient(45deg, rgb(90, 255, 192), rgb(3, 232, 248)) !important;
+        &:hover{
+          background: linear-gradient(45deg,  rgb(3, 232, 248), rgb(90, 255, 192)) !important;
+        }
+      }
+    }
+  }
+}

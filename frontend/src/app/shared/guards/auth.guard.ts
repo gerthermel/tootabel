@@ -12,9 +12,10 @@ import { AuthService } from '../services/auth.service';
 export class AuthGuard implements CanActivate {
 	constructor(
 		public router:Router,
-		@Inject(PLATFORM_ID) private platformId: Object,
+		@Inject(PLATFORM_ID) public platformId: Object,
 		public auth:AuthService,
 		public service:AppService,
+		public app:AppService,
 	){
 
 	}
@@ -22,33 +23,28 @@ export class AuthGuard implements CanActivate {
 
 	canActivate(
 		next: ActivatedRouteSnapshot,
-    	state: RouterStateSnapshot): Observable<any> | any{
-
-			/*if (isPlatformBrowser(this.platformId)) {*/
+    	state: RouterStateSnapshot): Observable<any>{
 				return this.auth.getAuth().pipe(
 					map(
 						(data)=>{
-							if(data){
-								this.auth.isAuthenticated = true;
-								this.service.isLoggedin = true;
-								this.auth.userData = data;
+							if(!data){
+								this.auth.isAuthenticated =false
 								return true
 							}else{
-								this.auth.isAuthenticated = false
-								this.service.isLoggedin = false;
-								this.auth.userData = [];
-								return true;
+								this.auth.isAuthenticated =true
+								this.auth.userData = data;
+								return true
 							}
 							
 						},
 						(error)=>{
-							this.auth.isAuthenticated = false
-							this.service.isLoggedin = false;
+							this.auth.isAuthenticated =false
 							return false
 						}
 					)
 				)
-			/*}*/
+
+
 		}
 }
 

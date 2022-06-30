@@ -1,0 +1,17 @@
+<div class="p-3 w100">
+	<h2>Seaded</h2>
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link" [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="['active']" aria-current="page" routerLink="./">Üldine</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="['active']" routerLink="./permissions">Õigused</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="['active']" routerLink="./toolised">Töölised</a>
+		</li>
+	</ul>
+	<div class="body">
+		<router-outlet></router-outlet>
+	</div>
+</div>

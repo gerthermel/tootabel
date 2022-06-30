@@ -9,10 +9,8 @@ import { AlertService, alertModalContent } from '../services/alert.service';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyResolver } from '../guards/company-resolver.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 @NgModule({
   declarations: [
-
   ],
   imports:[
     CommonModule,

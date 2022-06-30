@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AppService } from 'src/app/shared/services/app.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -8,6 +8,10 @@ import { CompanyService } from 'src/app/shared/services/company.service';
 import { state, trigger, style, transition, animate } from '@angular/animations';
 import {IMyDpOptions, IMyDateModel} from 'mydatepicker';
 import { TableService } from 'src/app/shared/services/table.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { isPlatformBrowser } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { PermissionsService } from 'src/app/shared/services/permissions.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -84,22 +88,34 @@ import { TableService } from 'src/app/shared/services/table.service';
 	]),
   ]
 })
+
 export class DashboardComponent implements OnInit, AfterViewInit {
+	private routeSub;
+	public isBrowser;
+	public companyName = 'Tompest Rakennus Oy';
+	public userName = '/ Gerth Ermel';
   constructor(
-	public service:AppService,
+    public auth:AuthService,
+    public service:AppService,
     public company:CompanyService,
-	public table:TableService,
-	private cd: ChangeDetectorRef
-  ) { }
+    public table:TableService,
+    public permissions: PermissionsService,
+    private route: ActivatedRoute,
+    @Inject(PLATFORM_ID) public platformId: Object,
+  ) { 
+	this.isBrowser = isPlatformBrowser(platformId)
+  }
+
+
 
   ngOnInit(): void {
-	
   }
 
   public returnZero() {
 	return 0
+}
+
+	ngAfterViewInit(): void {
 	}
 
-    ngAfterViewInit(): void {
-    }
 }

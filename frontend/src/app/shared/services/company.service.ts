@@ -8,13 +8,19 @@ import { AlertService } from './alert.service';
   providedIn: 'root'
 })
 export class CompanyService {
-  myCompaniesLoading = true;
-  companyLoading = true;
-  companyData = {
+  public demo2 = true;
+  public myCompaniesLoading = true;
+  public companyLoading = true;
+  public addWorkerLoading = false;
+  public gettingWorkers = true;
+  public companyWorkers = [];
+  public companyId = 0;
+  public companyData = {
     id:'',
     title: '',
   }
-
+  public userData = {};
+  
   public slidePanel = {//true == open, false == close
     createCompany:'hide',
     newEntry:'hide',
@@ -22,6 +28,8 @@ export class CompanyService {
     newFilter:'hide',
     newCompanyModal:'hide',
     overviewMenu:'hide',
+    userMenu:'hide',
+    addWorker:'hide',
   }
   public backDrop:string = 'out';
   private activePanel = [];
@@ -30,35 +38,88 @@ export class CompanyService {
     newEntry:false,
 	}
 	public myCompanies= [];
+  public companyPermissions = {};
+
+
   constructor(
     public http:HttpClient,
     public alert:AlertService,
   ) { }
 
+    hide(){
+      console.log(this.myCompaniesLoading)
+      this.myCompaniesLoading = false;
+    }
   setBackdrop(state){
 		this.backDrop = state;
 	}
 
+  loadMenu(){
+    setTimeout(()=>{
+      this.myCompaniesLoading = false;
+    },2000)
+  }
+
   openSidebar(panel, ignore?:boolean){
-    console.log(panel)
 		if(panel != this.activePanel && !ignore){
-			//this.slidePanel[this.activePanel] = 'hide';
       this.slidePanel[ this.activePanel[this.activePanel.length-1] ] = 'hide';
 		}
 
 		if( this.slidePanel[panel] == 'show'){
 			this.setBackdrop('hide')
 			this.slidePanel[panel] = 'hide'
-			//this.activePanel = panel; 
       this.activePanel.push(panel)
 		}else{
 			this.setBackdrop('show')
 			this.slidePanel[panel] = 'show';
-			//this.activePanel = panel; 
       this.activePanel.push(panel)
 		}
 
 	}
+
+  openAddWorkerPanel(){
+    this.openSidebar('addWorker');
+  }
+
+  setCompanyId(id){
+    this.companyId = id;
+  }
+
+  addWorker(f){
+    var companyId = this.companyData.id;
+    var code = f.value.code;
+    this.addWorkerLoading = true;
+    this.http.post(environment.apiUrl+'/tootable/company/add-worker',{code:  code, cid: this.companyId}, {withCredentials: true}).subscribe(
+      (res)=>{
+        //this.myCompanies.push(res['returnData'])
+        console.log(res['data'])
+        this.closeSidebar();
+        this.addWorkerLoading = false;
+      },
+      (error)=>{
+        this.addWorkerLoading = false;
+        this.alert.error(error.error.message)
+      }
+    )
+  }
+
+  getWorkers(id){
+    var companyId = companyId;
+    return new Promise(resolve => {
+      this.http.get(environment.apiUrl+'/tootable/company/'+id+'/get-workers', {withCredentials: true}).subscribe(
+        (res)=>{
+          this.gettingWorkers = false;
+          this.companyWorkers = res['workers'];
+        },
+        (error)=>{
+
+          this.gettingWorkers = false;
+          this.alert.error(error.error.message)
+        }
+      )
+      
+    })
+  }
 
   closeSidebar(name?:string){
     this.setBackdrop('hide')

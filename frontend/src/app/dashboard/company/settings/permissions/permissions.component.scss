@@ -1,0 +1,26 @@
+.permission_groups{
+	border-right:solid thin #eceeef;
+	margin-bottom:15px;
+}
+.permission_groups ul{
+	padding:0px;
+    margin-right:-15px;
+    text-transform: capitalize;
+}
+
+.permission_groups li.active{
+	background-color:#bfbfbf;
+	color:white;
+}
+.permission_groups li.active:hover{
+	cursor:default;
+}
+.permission_groups li{
+	list-style:none;
+	padding:15px;
+	cursor:pointer;
+}
+
+.savePerm{
+	min-width: 83px;
+}

@@ -1,19 +1,57 @@
 $menu-color:#bfbfbf;
 $active-color: #4e4e4e;
+button.company{
+  background: none;
+  border: none;
+  width: 42px;
+  text-align: center;
+  color: $menu-color;
+}
 ul{
   list-style-type: none;
   padding: 0px;
   width: 100%;
   li{
-    padding: 10px 15px 10px 15px;
-    display:flex;
+    //padding: 10px 15px 10px 15px;
+    /*display:flex;*/
     position: relative;
+    .company{
+      display:flex;
+      font-size:20px;
+      padding: 10px 15px 10px 15px;
+      padding-top:5px;
+      padding-bottom:5px;
+    }
+    .workers{
+      font-size:12px;
+      height:0px;
+      overflow:hidden;
+      li{
+        cursor:pointer;
+        padding:5px;
+        padding-left:15px;
+        padding-right:15px;
+      }
+    }
+    &.active{
+      background-color:#636363;
+    }
     &:hover{
       background-color:$active-color;
       
     };
     &.active{
       background-color:#636363;
+    }
+    button{
+      padding-left:10px;
+      padding-right:10px;
+    }
+    .icon{
+      min-width: 30px;
+      display:inline-block;
+      text-align: center;
+      margin-right: 5px;
     }
     .left{
       width:100%;

@@ -1,0 +1,63 @@
+<div class="container-justified">
+	<div class="row">
+		<div class="p-3 w-100 text-center" *ngIf="!this.loadingParmissions;else content">
+			<fa-icon [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+		</div>
+		<ng-template #content>
+			<div class="col-lg-2 permission_groups">
+				<h6></h6>
+				<ul>
+					<li class="select_permissions"  [class.active]="selectedPermissionName == 'omanik'"  (click)="selectPermission('omanik')"> Omanik</li>
+					<li class="select_permissions"  [class.active]="selectedPermissionName == 'kaasomanik'" (click)="selectPermission('kaasomanik')"> Kaasomanik</li>
+					<li class="select_permissions"  [class.active]="selectedPermissionName == 'raamatupidaja'" (click)="selectPermission('raamatupidaja')"> Raamatupidaja</li>
+					<li class="select_permissions"  [class.active]="selectedPermissionName == 'tooline'" (click)="selectPermission('tooline')"> Tööline</li>
+					<li class="select_permissions"  [class.active]="selectedPermissionName == 'praktikant'" (click)="selectPermission('praktikant')"> Praktikant</li>
+				</ul>
+			</div>
+			<div class="col-lg-9" id="group_permissions">
+				<div class="p-3 w-100 text-center" *ngIf="this.loadingParmissionsChecks;else content">
+					<fa-icon [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+				</div>
+				<ng-template #content>
+					<form #myForm="ngForm" >
+						<legend>Õigused</legend>
+						<div class="form-check">
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="mod_perm" type="checkbox" [checked]="this.selectedPermissonsLong['mod_perm']" (click)="changePermission('mod_perm', $event.target.checked)">
+								<label class="custom-control-label" for="mod_perm">Saab muuta õiguste gruppide õigusid</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="mod_user_perm" type="checkbox" [checked]="this.selectedPermissonsLong['mod_user_perm']" (click)="changePermission('mod_user_perm', $event.target.checked)">
+								<label class="custom-control-label" for="mod_user_perm">Saab muuta kasutaja õiguste gruppi</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="add_worker" type="checkbox" [checked]="this.selectedPermissonsLong['add_worker']" (click)="changePermission('add_worker', $event.target.checked)">
+								<label class="custom-control-label" for="add_worker">Saab lisada töötajaid firmasse</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="remove_worker" type="checkbox" [checked]="this.selectedPermissonsLong['remove_worker']" (click)="changePermission('remove_worker', $event.target.checked)">
+								<label class="custom-control-label" for="remove_worker">Saab eemdada töötajaid firmast</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="see_worker_table" type="checkbox" [checked]="this.selectedPermissonsLong['see_worker_table']" (click)="changePermission('see_worker_table', $event.target.checked)">
+								<label class="custom-control-label" for="see_worker_table">Saab vaadata töölise tablit</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="edit_worker_settings" type="checkbox" [checked]="this.selectedPermissonsLong['edit_worker_settings']" (click)="changePermission('edit_worker_settings', $event.target.checked)">
+								<label class="custom-control-label" for="edit_worker_settings">Saab muuta töölise seadeid firmas</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="edit_worker_table" type="checkbox" [checked]="this.selectedPermissonsLong['edit_worker_table']" (click)="changePermission('edit_worker_table', $event.target.checked)">
+								<label class="custom-control-label" for="edit_worker_table">Saab muuta töölise tablit</label>
+							</div>
+							<button type="submit" class="savePerm btn btn-primary mt-3" [class.disabled]="this.isSaving" [disabled]="this.isSaving" (click)="save()">
+								<fa-icon [hidden]="!this.isSaving" [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+								<span [hidden]="this.isSaving">Salvesta</span>
+							</button>
+					</div>
+					</form>
+				</ng-template>
+			</div>
+		</ng-template>
+	</div>
+</div>

@@ -10,6 +10,8 @@ import { MyCompaniesComponent } from './left-menu/my-companies/my-companies.comp
 import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { CompanyComponent } from './company/company.component';
 import { AutosizeModule } from 'ngx-autosize';
+import { BrowserTransferStateModule } from '@angular/platform-browser';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -19,13 +21,14 @@ import { AutosizeModule } from 'ngx-autosize';
     DashboardComponent, 
     MyCompaniesComponent, 
     LeftMenuComponent, 
-    CompanyComponent,
+    CompanyComponent, SettingsComponent,
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
     AutosizeModule,
+		BrowserTransferStateModule,
   ]
 })
 export class DashboardModule { }

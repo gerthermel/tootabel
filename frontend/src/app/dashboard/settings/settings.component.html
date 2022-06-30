@@ -1,0 +1,39 @@
+<div class="container-fluid mt-3" >
+  <div class="row mb-3 pl-3">
+    <h2>Kontoseaded</h2>
+  </div>
+  <form [formGroup]="settingsForm" (ngSubmit)="save()">
+    <div class="row mb-3">
+      <label for="" class="col-sm-1">Eesnimi</label>
+      <div class="col-sm-2">
+        <input 
+          formControlName="firstname"
+          type="text" 
+          class="form-control" 
+          value="{{ this.auth.userData.firstname }}"
+          >
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="" class="col-sm-1">Perekonnanimi</label>
+      <div class="col-sm-2">
+        <input 
+        formControlName="lastname"
+        type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="" class="col-sm-1">E-post</label>
+      <div class="col-sm-4">
+        <input 
+        formControlName="email"
+        type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4 offset-1">
+        <button type="submit" class="btn btn-primary">Salvesta</button>
+      </div>
+    </div>
+  </form>
+</div>

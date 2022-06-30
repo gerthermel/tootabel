@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <form class=" g-3" #myForm="ngForm" (ngSubmit)="save(myForm.value)">
+      <div class="row">
+        <label for="companyName" class="col-sm-1 col-form-label">Firma Nimi</label>
+        <div class="col-sm-5">
+          <input 
+          type="text" 
+          name="name"
+          class="form-control" 
+          [ngModel]="company.name"
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-1 col-12 mt-3">
+          <button type="submit" class="btn btn-primary" [class.disabled]="this.isSaving" [disabled]="this.isSaving">
+            <fa-icon [hidden]="!this.isSaving" [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+            <span [hidden]="this.isSaving">Salvesta</span>
+          </button>
+        </div>
+      </div>
+    </form>
+</div>

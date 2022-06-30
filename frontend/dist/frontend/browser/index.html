@@ -6,8 +6,71 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <html lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi" />
-  <link rel="stylesheet" href="styles.c909e3cd36f72048e70f.css"></head>
+    <style type="text/css">
+      body, html {
+        height: 100%;
+      }
+      .app-loading {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .app-loading .spinner {
+        height: 200px;
+        width: 200px;
+        animation: rotate 2s linear infinite;
+        transform-origin: center center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .app-loading .spinner .path {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite;
+        stroke-linecap: round;
+        stroke: #ddd;
+      }
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -124px;
+        }
+      }
+    </style>
+  </head>
   <body>
-    <app-root></app-root>
-  <script src="runtime-es2015.fd66b78bef65a309e860.js" type="module"></script><script src="runtime-es5.fd66b78bef65a309e860.js" nomodule defer></script><script src="polyfills-es5.0ee01fe6975cf0ad2577.js" nomodule defer></script><script src="polyfills-es2015.8f93f7fc91f8662d7b21.js" type="module"></script><script src="main-es2015.d90978c2cfc60167287a.js" type="module"></script><script src="main-es5.d90978c2cfc60167287a.js" nomodule defer></script></body>
+    
+    <div class="bg"></div>
+    <app-root>
+    <!-- selector from app.component.ts -->
+
+     <!-- loading layout replaced by app after startupp -->
+     <div class="app-loading">
+        <svg class="spinner" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke- 
+          width="2" stroke-miterlimit="10"/>
+        </svg>
+      </div>
+    </app-root>
+  <script src="runtime.js" type="module"></script><script src="polyfills.js" type="module"></script><script src="styles.js" type="module"></script><script src="vendor.js" type="module"></script><script src="main.js" type="module"></script></body>
 </html>

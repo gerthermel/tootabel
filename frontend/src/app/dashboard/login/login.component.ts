@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
     this.signInForm = new FormGroup({
       alias: new FormControl(),
       password: new FormControl(),
-      
    });
   }
 
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
 		var password:string = this.signInForm.get('password').value
 		this.auth.signIn(alias, password).subscribe(
       (res)=>{
-        this.service.isLoggedin = true
+        this.auth.isAuthenticated = true
       }
     )
 		//this.modalRef.close();

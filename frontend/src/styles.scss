@@ -56,6 +56,33 @@ body{
 .right{
   
 }
+.menu{
+  .accordion{
+    width: 100%;
+    button{
+      width:100%;
+      box-shadow: none;
+      .left{
+        float:left;
+      }
+      .right{
+        float:right;
+      }
+    }
+  }
+  .card{
+    background-color: transparent !important;
+  }
+  .card-header{
+    padding:0px !important;
+  }
+  .btn-link{
+    color:#bfbfbf !important;
+    text-decoration: none !important;
+  }
+
+}
+
 
   @media ( min-width : 991px) {//only for pc
 
@@ -170,6 +197,9 @@ body{
       z-index: 3;
     }
   }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';

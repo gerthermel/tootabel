@@ -1,0 +1,7 @@
+
+<div *ngIf="this.parent.analytics;else users">
+    Analytics - has access
+</div>
+<ng-template #users>
+    No access to analytics
+</ng-template>

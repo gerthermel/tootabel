@@ -1,9 +1,5 @@
-
-<ng-template [ngIf]="this.service.mainLoading" [ngIfElse]="loaded">
-    Loading...
-</ng-template>
-<ng-template #loaded>
-  <ng-template [ngIf]="this.service.isLoggedin" [ngIfElse]="isNotAuth">
+<div *ngIf="this.isBrowser" style="height:100%">
+  <ng-template [ngIf]="this.auth.isAuthenticated" [ngIfElse]="isNotAuth">
     <div class="container-fluid" style="height:100%">
       <div class="row" style="height:100%">
         <div class="col-lg-2 menu p-0">
@@ -16,12 +12,22 @@
                 <fa-icon [icon]="['fas','bars']" (click)='this.company.openSidebar("mainMenu")'></fa-icon>
               </div>
               <div class="col col-lg-10 text-center align-self-center">
-                <h2 class="d-lg-none">{{ this.table.months[this.table.selectedMonth] }}</h2>
+                <h2 class="d-lg-none">
+                  {{ this.table.months[this.table.selectedMonth] }} 
+                </h2>
+                <h6 class="d-none d-lg-block text-left pl-3">
+                  <span>{{ this.company.companyData['name'] }}</span><span> {{  this.company.userData[this.service.selectedUser]['titlename'] }}</span>
+                </h6>
               </div>
               <div class="col-2 col-lg-2 text-center align-self-center">
                 <div class="d-flex  justify-content-end pr-3">
-                    <div class="flex mr-lg-3 ">
-                      <fa-icon [icon]="['fas', 'user']" ></fa-icon>
+                    <div class="flex mr-lg-3 " ngbDropdown >
+                      <fa-icon [icon]="['fas', 'user']" ngbDropdownToggle></fa-icon>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button ngbDropdownItem routerLink="kasutaja/seaded">Seaded</button>
+                        <div class="dropdown-divider"></div>
+                        <button ngbDropdownItem (click)="this.auth.signOut()">Välju</button>
+                      </div>
                     </div>
                     <!-- 
 
@@ -278,12 +284,45 @@
       </div>
     </div>
 
+    <div [@slideLeft]="this.company.slidePanel.addWorker" class="addCopmanyModal">
+      <div class="wrap p-4">
+        <div class="align-self-center">
+          <h2>Lisa Tööline</h2>
+          <form>
+            <form  #workerForm="ngForm">
+              <div class="form-group">
+                <small for="name">E-mail või Kood</small>
+                <input         
+                  ngModel
+                  #name="ngModel" 
+                  name="code"
+                  type="text" 
+                  class="form-control" 
+                  autofill="false" 
+                  placeholder="" 
+                  ngbAutofocus 
+                  required
+                >
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" [disabled]="this.company.addWorkerLoading" (click)="this.company.addWorker(workerForm)" >
+                <fa-icon *ngIf="this.company.addWorkerLoading" [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
+                <span *ngIf="!this.company.addWorkerLoading">Lisa</span>
+              </button><br>
+            </form>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div id="backDrop" [@backDrop]="this.company.backDrop" (click)="this.company.closeSidebar()"></div>
 
   </ng-template>
   <ng-template #isNotAuth>
       <app-login></app-login>
   </ng-template>
-</ng-template>
+</div>
+
+
+
 
 
