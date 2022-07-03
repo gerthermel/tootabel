@@ -16,7 +16,7 @@
                   {{ this.table.months[this.table.selectedMonth] }} 
                 </h2>
                 <h6 class="d-none d-lg-block text-left pl-3">
-                  <span>{{ this.company.companyData['name'] }}</span><span> {{  this.company.userData[this.service.selectedUser]['titlename'] }}</span>
+                  <span>{{ this.company.companyData['name'] }}</span><span *ngIf="this.service.selectedUser"> {{  this.company.userData[this.service.selectedUser]['titlename'] }}</span>
                 </h6>
               </div>
               <div class="col-2 col-lg-2 text-center align-self-center">

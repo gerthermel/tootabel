@@ -18,7 +18,6 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.auth.userData.userData)
     this.settingsForm = new FormGroup({
       firstname: new FormControl( this.auth.userData.userData.firstname ),
       lastname: new FormControl( this.auth.userData.userData.lastname ),

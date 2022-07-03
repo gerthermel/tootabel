@@ -3,11 +3,11 @@
     <fa-icon [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>
   </div>
   <ng-template #menuContent>
-    <ngb-accordion #accord="ngbAccordion" [closeOthers]="true" >
+    <ngb-accordion ngbDropdown  #accord="ngbAccordion" [closeOthers]="true" >
       <ngb-panel  [id]="'static-'+item.id" routerLinkActive="active" [attr.class]="item.id == this.company.companyData.id ? 'active' : null" *ngFor="let item of this.company.myCompanies; let i=index">
         <ng-template ngbPanelHeader let-opened="opened">
           <div class="custom-header justify-content-between" [class.collapsed]="!opened"  >
-              <div class="pl-2 pr-2">
+              <div class="pl-2 pr-2 d-flex">
                 <div class="left" >
                   <button class="company" [hidden]="opened" ngbPanelToggle (click)="item.see_workers ? selectCompany(item.id) : false">
                     <fa-icon class="ml-2 mr-3" [icon]="['fas', 'chevron-right']"  ></fa-icon>
@@ -17,9 +17,20 @@
                   </button>
                   <a routerLink="/firma/{{item.id}}">{{ this.item.see_workers }} {{item.name}}</a>
                 </div>
-                <div class="right">
-                  
- 
+                <div class="right text-right">
+                  <fa-icon class="text-right" [icon]="['fas', 'ellipsis-v']" ngbDropdownToggle></fa-icon>
+                </div>
+                <div class="dropdown-menu" container="body" placement="top" ngbDropdownMenu>
+                  <div ngbDropdownItem (click)="this.company.openAddWorkerPanel()">
+                    <fa-icon class="text-right" [icon]="['fas', 'users']" ></fa-icon> Lisa Töötaja
+                  </div>
+                  <button ngbDropdownItem routerLink="/firma/{{item.id}}/seaded">
+                    <fa-icon class="text-right" [icon]="['fas', 'cogs']" ></fa-icon> Seaded
+                  </button>
+                  <li><hr class="dropdown-divider"></li>
+                  <button (click)="company.removeCompany(i)" ngbDropdownItem>
+                    <fa-icon class="text-right" [icon]="['fas', 'trash']" ></fa-icon> Eemalda Firma
+                  </button>
                 </div>
               </div>
           </div>

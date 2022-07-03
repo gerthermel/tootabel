@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+	console.log( this.company.userData[this.service.selectedUser]['titlename']  )
   }
 
   public returnZero() {

@@ -28,10 +28,10 @@ export class AuthGuard implements CanActivate {
 					map(
 						(data)=>{
 							if(!data){
-								this.auth.isAuthenticated =false
+								this.auth.isAuthenticated = false
 								return true
 							}else{
-								this.auth.isAuthenticated =true
+								this.auth.isAuthenticated = true
 								this.auth.userData = data;
 								return true
 							}

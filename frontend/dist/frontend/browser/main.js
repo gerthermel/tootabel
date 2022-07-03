@@ -309,12 +309,7 @@ class CompanyResolver {
         if (Object(_angular_common__WEBPACK_IMPORTED_MODULE_2__["isPlatformBrowser"])(this.platformId)) {
             //this.table.generateCalendarArray()
             return this.http.get(src_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiUrl + `/tootable/company/${route.params['id']}`, { withCredentials: true }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])((data) => {
-                this.company.companyData.title = data['companyData'][0]['name'];
-                this.company.companyData.id = data['companyData'][0]['id'];
-                this.permissions.companyPermissions = data['permissionsData'];
-                this.permissions.locs = data['permissionsLocs'];
-                this.permissions.defaults = data['permissionsDefaults'];
-                return data;
+                this.company.companyData = data['companyData'][0];
             }, (error) => {
             }) //end map
             ); //enbd pipe
@@ -742,14 +737,18 @@ class CompanyService {
     constructor(http, alert) {
         this.http = http;
         this.alert = alert;
+        this.demo2 = true;
         this.myCompaniesLoading = true;
         this.companyLoading = true;
         this.addWorkerLoading = false;
+        this.gettingWorkers = true;
+        this.companyWorkers = [];
         this.companyId = 0;
         this.companyData = {
             id: '',
             title: '',
         };
+        this.userData = {};
         this.slidePanel = {
             createCompany: 'hide',
             newEntry: 'hide',
@@ -769,8 +768,17 @@ class CompanyService {
         this.myCompanies = [];
         this.companyPermissions = {};
     }
+    hide() {
+        console.log(this.myCompaniesLoading);
+        this.myCompaniesLoading = false;
+    }
     setBackdrop(state) {
         this.backDrop = state;
+    }
+    loadMenu() {
+        setTimeout(() => {
+            this.myCompaniesLoading = false;
+        }, 2000);
     }
     openSidebar(panel, ignore) {
         if (panel != this.activePanel && !ignore) {
@@ -789,7 +797,6 @@ class CompanyService {
     }
     openAddWorkerPanel() {
         this.openSidebar('addWorker');
-        console.log(this.companyData.id);
     }
     setCompanyId(id) {
         this.companyId = id;
@@ -806,6 +813,18 @@ class CompanyService {
         }, (error) => {
             this.addWorkerLoading = false;
             this.alert.error(error.error.message);
+        });
+    }
+    getWorkers(id) {
+        var companyId = companyId;
+        return new Promise(resolve => {
+            this.http.get(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl + '/tootable/company/' + id + '/get-workers', { withCredentials: true }).subscribe((res) => {
+                this.gettingWorkers = false;
+                this.companyWorkers = res['workers'];
+            }, (error) => {
+                this.gettingWorkers = false;
+                this.alert.error(error.error.message);
+            });
         });
     }
     closeSidebar(name) {
@@ -878,6 +897,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
 /* harmony import */ var _company_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./company.service */ "./src/app/shared/services/company.service.ts");
+/* harmony import */ var _alert_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./alert.service */ "./src/app/shared/services/alert.service.ts");
 
 //import { AlertService } from './alert.service';
 
@@ -885,11 +905,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/**
+   mod_perm: 1, //modify group permissions
+   mod_user_perm:2, //change user permissons group
+   add_worker: 3,
+   edit_worker_settings: 4,
+   see_worker_table: 5,
+   edit_worker_table: 6,
+   remove_worker: 7,
+ */
 class PermissionsService {
-    constructor(http, router, company) {
+    constructor(http, router, company, alert) {
         this.http = http;
         this.router = router;
         this.company = company;
+        this.alert = alert;
         this.companyPermissions = {};
         this.myPermissions = {};
         this.locs = {};
@@ -898,15 +929,52 @@ class PermissionsService {
     getPermissions() {
         return this.http.get(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl + `/tootable/permissions/${this.company.companyData.id}`, { withCredentials: true });
     }
+    getAllPermissions() {
+        /**
+         * Loads authicated/loggedin users all permission
+         * Loads perm locations
+         * Loads perm defaults
+         */
+        return this.http.get(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl + `/tootable/permissions/all`, { withCredentials: true });
+    }
+    loadPermissions() {
+        this.http.get(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl + `/tootable/permissions/`, { withCredentials: true }).subscribe((res) => {
+            this.locs = res['locations'];
+            this.defaults = res['defaults'];
+        });
+    }
+    hasPermission(name, code) {
+        if (!code) {
+            console.error(code);
+            return false;
+        }
+        var location = this.permissionLocation(name);
+        var code = code.toString();
+        var char = code.charAt(location);
+        if (char == '1') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    permissionLocation(name) {
+        if (Object.keys(this.locs).length == 0) {
+            this.alert.error('Error: Permissions Locs not loaded');
+            return;
+        }
+        var location = this.locs[name] - 1;
+        return location;
+    }
 }
-PermissionsService.ɵfac = function PermissionsService_Factory(t) { return new (t || PermissionsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_company_service__WEBPACK_IMPORTED_MODULE_4__["CompanyService"])); };
+PermissionsService.ɵfac = function PermissionsService_Factory(t) { return new (t || PermissionsService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_company_service__WEBPACK_IMPORTED_MODULE_4__["CompanyService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_alert_service__WEBPACK_IMPORTED_MODULE_5__["AlertService"])); };
 PermissionsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: PermissionsService, factory: PermissionsService.ɵfac, providedIn: 'root' });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PermissionsService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }, { type: _company_service__WEBPACK_IMPORTED_MODULE_4__["CompanyService"] }]; }, null); })();
+    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }, { type: _company_service__WEBPACK_IMPORTED_MODULE_4__["CompanyService"] }, { type: _alert_service__WEBPACK_IMPORTED_MODULE_5__["AlertService"] }]; }, null); })();
 
 
 /***/ }),
@@ -983,8 +1051,9 @@ class TableService {
     getData() {
         var date = new Date();
         var date2 = new Date('2021-01-01');
-        this.http.get(src_environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].apiUrl + `/tootable/table/${this.service.selectedCompany}/hours/${this.filterSelectedMonth}/${this.filterSelectedYear}`, { withCredentials: true }).subscribe((res) => {
+        this.http.get(src_environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].apiUrl + `/tootable/table/${this.service.selectedUser}/hours/${this.filterSelectedMonth}/${this.filterSelectedYear}`, { withCredentials: true }).subscribe((res) => {
             this.hours = res['data'];
+            console.log(res['data']['data']);
             this.isTableLoading = false;
             this.totalHours = res['hours'];
             this.tyymaad = res['tyymaad'];

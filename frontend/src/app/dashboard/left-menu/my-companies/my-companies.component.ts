@@ -36,9 +36,7 @@ export class MyCompaniesComponent implements OnInit {
     dropdown.placement = 'bottom-right';
   }
 
-  ngOnInit(): void {
-    console.log('asd')
-    
+  ngOnInit() {
     this.http.get(environment.apiUrl+'/tootable/company/my-companies', {withCredentials: true}).subscribe(
         (res)=>{
           var data:any = res['data'];

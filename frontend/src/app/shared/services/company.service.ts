@@ -17,7 +17,7 @@ export class CompanyService {
   public companyId = 0;
   public companyData = {
     id:'',
-    title: '',
+    title:'',
   }
   public userData = {};
   
@@ -168,6 +168,7 @@ export class CompanyService {
   removeCompany(id:number){
     var companyId = this.myCompanies[id].id;
     this.myCompanies.splice(id, 1);
+
     this.http.delete(environment.apiUrl+'/tootable/company/'+companyId, {withCredentials: true}).subscribe(
       (res)=>{
       },

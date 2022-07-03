@@ -82,6 +82,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.service.selectedUser = null;
     this.routeSub.unsubscribe();
   }
 

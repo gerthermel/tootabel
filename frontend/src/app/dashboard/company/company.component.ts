@@ -92,6 +92,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy() {
+    this.company.companyData = {id:'', title:''};
     this.routeSub.unsubscribe();
   }
 

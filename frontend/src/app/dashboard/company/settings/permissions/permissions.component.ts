@@ -1,9 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { computeDecimalDigest } from '@angular/compiler/src/i18n/digest';
 import { Component, OnInit } from '@angular/core';
 import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
 import { delay } from 'rxjs/operators';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { CompanyService } from 'src/app/shared/services/company.service';
 import { PermissionsService } from 'src/app/shared/services/permissions.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-permissions',
@@ -21,11 +24,13 @@ export class PermissionsComponent implements OnInit {
   constructor(
     public permissions:PermissionsService,
     public alert:AlertService,
+    public company:CompanyService,
+    public http:HttpClient,
   ) { }
 
   ngOnInit(): void {
-
     this.selectedPermissionName = 'omanik';
+
     this.selectedPermission = this.permissions.companyPermissions['omanik'];
     this.loadCheckboxes().then(
       ()=>{
@@ -67,8 +72,8 @@ export class PermissionsComponent implements OnInit {
   public loadCheckboxes(){
     return new Promise<void>(resolve => {
       for(let key in this.permissions.locs){ //.substring(0, 5)
-        var loc = this.permissions.locs[key];
-        if( this.permissions.companyPermissions[this.selectedPermissionName].substring(loc, 1) == 0 ){
+        var loc = this.permissions.locs[key]-1;
+        if( this.permissions.companyPermissions[this.selectedPermissionName].charAt(loc) == 0 ){
           this.selectedPermissonsLong[key] = false;
         }else{
           this.selectedPermissonsLong[key] = true;
@@ -112,15 +117,27 @@ export class PermissionsComponent implements OnInit {
 
   public changePermission(name, event){
     this.selectedPermissonsLong[name] = event
-    console.log(event)
   }
 
   public save(){
-    console.log(this.permissionsEncode());
+    this.isSaving = true;
+    var companyId = this.company.companyData.id
+    var code = this.permissionsEncode();
+    var permissionName = this.selectedPermissionName;
+    this.http.put(environment.apiUrl+`/tootable/permissions/update`,{ cid:companyId, code:code, perm:permissionName }, {withCredentials: true}).subscribe(
+      (res)=>{
+        this.isSaving = false;
+      },
+      (err)=>{
+        console.error(err)
+      }
+    )
   }
 
   public permissionsEncode(){
-    var code = '';
+    
+    /*
+    var code = this.selectedPermission;
     for(let name in this.selectedPermissonsLong){
       var value = this.selectedPermissonsLong[name];
       var location = this.permissions.locs[name];
@@ -131,9 +148,26 @@ export class PermissionsComponent implements OnInit {
       }
     }
     return code;
-    /*
+    */
+    var code = '';
     var maxLength = Object.keys(this.permissions.locs).length;
-
+    for(let i=0; i<maxLength; i++ ){
+      if(this.selectedPermissionName == 'omanik'){
+        code += 1;
+      }else{
+        var name = Object.keys(this.permissions.locs)[i];
+        if( this.selectedPermissonsLong[name] ){
+          code += 1;
+        }else{
+          code += 0;
+        }
+      }
+    }
+    console.log(code)
+    return code;
+    /*
+    
+  var maxLength = Object.keys(this.permissions.locs).length;
     for(let i=0; i<maxLength; i++ ){
       if(this.selectedPermissionName == 'omanik'){
         code += 1;

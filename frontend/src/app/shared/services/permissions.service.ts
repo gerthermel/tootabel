@@ -57,7 +57,7 @@ export class PermissionsService{
 
   hasPermission(name:string, code?:string){
     if(!code){
-      console.error(code)
+      console.error(name+' '+code)
       return false;
     }
     var location = this.permissionLocation(name)

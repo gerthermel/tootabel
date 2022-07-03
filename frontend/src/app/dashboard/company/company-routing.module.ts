@@ -17,14 +17,14 @@ const routes: Routes = [
           component: DashboardComponent,
         },
         { 
+          path: 'seaded', 
+          loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) 
+        },
+        { 
           path: ':id', 
           resolve: [UserResolver],
           component: IndexComponent,
 
-        },
-        { 
-          path: 'seaded', 
-          loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) 
         },
       ]
     }

@@ -39,7 +39,7 @@
 								<label class="custom-control-label" for="remove_worker">Saab eemdada töötajaid firmast</label>
 							</div>
 							<div class="custom-control custom-checkbox">
-								<input class="custom-control-input" id="see_worker_table" type="checkbox" [checked]="this.selectedPermissonsLong['see_worker_table']" (click)="changePermission('see_worker_table', $event.target.checked)">
+								<input class="custom-control-input" id="see_worker_table" type="checkbox" [checked]="this.selectedPermissonsLong['see_workers']" (click)="changePermission('see_workers', $event.target.checked)">
 								<label class="custom-control-label" for="see_worker_table">Saab vaadata töölise tablit</label>
 							</div>
 							<div class="custom-control custom-checkbox">
@@ -49,6 +49,10 @@
 							<div class="custom-control custom-checkbox">
 								<input class="custom-control-input" id="edit_worker_table" type="checkbox" [checked]="this.selectedPermissonsLong['edit_worker_table']" (click)="changePermission('edit_worker_table', $event.target.checked)">
 								<label class="custom-control-label" for="edit_worker_table">Saab muuta töölise tablit</label>
+							</div>
+							<div class="custom-control custom-checkbox">
+								<input class="custom-control-input" id="analytics" type="checkbox" [checked]="this.selectedPermissonsLong['analytics']" (click)="changePermission('analytics', $event.target.checked)">
+								<label class="custom-control-label" for="analytics">Näeb firma analüütilist infot</label>
 							</div>
 							<button type="submit" class="savePerm btn btn-primary mt-3" [class.disabled]="this.isSaving" [disabled]="this.isSaving" (click)="save()">
 								<fa-icon [hidden]="!this.isSaving" [icon]="['fas', 'circle-notch']" [spin]="true" class="align-self-center text-center w-100"></fa-icon>

@@ -7,13 +7,38 @@ button.company{
   text-align: center;
   color: $menu-color;
 }
+.accordion {
+  .icon{
+    min-width: 30px;
+    display:inline-block;
+    text-align: center;
+    margin-right: 5px;
+  }
+  .left{
+    width:100%;
+  }
+  .right{
+    width:50px;
+    text-align: right;
+    fa-icon{
+      cursor:pointer;
+      &:hover{
+        color:white;
+      }
+    }
+    .dropdown-toggle::after{
+      display:none;
+    }
+  }
+}
+/*
 ul{
   list-style-type: none;
   padding: 0px;
   width: 100%;
   li{
     //padding: 10px 15px 10px 15px;
-    /*display:flex;*/
+    //display:flex;
     position: relative;
     .company{
       display:flex;
@@ -79,3 +104,4 @@ ul{
     display: initial;
   }
 }
+*/
